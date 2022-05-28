@@ -127,5 +127,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # github actions
-scoooool.deploy.main
-scoooool.deploy.main.pub
+gh-pages.pub
+gh-pages
