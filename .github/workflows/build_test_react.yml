@@ -39,6 +39,13 @@ jobs:
           yarn build
           yarn test
 
+      - name: deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_dir: ./dist
+
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world!
