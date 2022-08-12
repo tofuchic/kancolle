@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import logo from "logo.svg";
+import logo from "icons/logo.svg";
 import "App.css";
-import "firebaseApp";
+import "auth/firebaseApp";
 import {
   getAuth,
   Auth,
