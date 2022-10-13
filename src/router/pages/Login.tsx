@@ -5,7 +5,7 @@ const Login = () => {
   const { currentUser, login, logout } = useAuth();
 
   const OWNER = "tofuchic";
-  const REPO = "scoooool";
+  const REPO = "kancolle";
 
   // アクセストークンを使用してGitHub API（GET /Issues）へリクエストする
   const requestGetApi = (token: string | null) => {

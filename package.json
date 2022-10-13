@@ -1,8 +1,8 @@
 {
-  "name": "scoooool",
+  "name": "kancolle",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://tofuchic.github.io/scoooool",
+  "homepage": "https://tofuchic.github.io/kancolle",
   "scripts": {
     "predeploy": "yarn build",
     "deploy": "gh-pages -d dist",
