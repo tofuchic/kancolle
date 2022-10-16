@@ -1,12 +1,14 @@
 import { HashRouter, Link, useRoutes } from "react-router-dom";
 import { Home } from "router/pages/Home";
 import { AuthProvider } from "services/context/AuthProvider";
-import Login from "./Login";
+import { Login } from "./Login";
+import { Mikan } from "./Mikan";
 
 const RootRoutes = () => {
   return useRoutes([
     { path: "/home", element: <Home /> },
     { path: "/login", element: <Login /> },
+    { path: "/mikan", element: <Mikan /> },
   ]);
 };
 
@@ -20,6 +22,9 @@ const App = () => {
           </li>
           <li>
             <Link to="/login">Login</Link>
+          </li>
+          <li>
+            <Link to="/mikan">Mikan</Link>
           </li>
         </ul>
       </nav>
