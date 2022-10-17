@@ -1,18 +1,20 @@
-import { HashRouter, Link, useRoutes } from "react-router-dom";
-import { Home } from "router/pages/Home";
-import { AuthProvider } from "services/context/AuthProvider";
-import { Login } from "./Login";
-import { Mikan } from "./Mikan";
+import * as React from 'react'
+import { HashRouter, Link, useRoutes } from 'react-router-dom'
+import { AuthProvider } from '@/services/context/AuthProvider'
 
-const RootRoutes = () => {
+import { Home } from './Home'
+import { Login } from './Login'
+import { MikanDetail } from './MikanDetail'
+
+const RootRoutes = (): JSX.Element | null => {
   return useRoutes([
-    { path: "/home", element: <Home /> },
-    { path: "/login", element: <Login /> },
-    { path: "/mikan", element: <Mikan /> },
-  ]);
-};
+    { path: '/home', element: <Home /> },
+    { path: '/login', element: <Login /> },
+    { path: '/mikan', element: <MikanDetail /> }
+  ])
+}
 
-const App = () => {
+export const App: React.FunctionComponent = () => {
   return (
     <HashRouter basename="/">
       <nav>
@@ -32,7 +34,5 @@ const App = () => {
         <RootRoutes />
       </AuthProvider>
     </HashRouter>
-  );
-};
-
-export default App;
+  )
+}

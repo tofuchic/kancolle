@@ -1,31 +1,39 @@
-import { useState, useEffect } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import logo from "icons/logo.svg";
-import { db } from "services/auth/firebase";
+/* eslint-disable react/react-in-jsx-scope */
+import { useState, useEffect } from 'react'
+import { collection, getDocs } from 'firebase/firestore'
+import logo from '@/assets/logo.svg'
+import { db } from '@/services/auth/firebase'
 
-type Mikan = {
-  id: string;
-  userId: string;
-  taste: number;
-  texture: number;
-  note: string;
-};
+interface Mikan {
+  id: string
+  userId: string
+  taste: number
+  texture: number
+  note: string
+}
 
-export const Mikan = () => {
+export const MikanDetail = (): JSX.Element => {
   const [mikan, setMikan] = useState<Mikan>({
-    id: "unshu",
-    userId: "userId",
+    id: 'unshu',
+    userId: 'userId',
     taste: -10,
     texture: 10,
-    note: "memoです",
-  });
+    note: 'memoです'
+  })
 
   useEffect(() => {
     // 取得結果をコンソールに出力
-    const unshusRef = collection(db, "unshu");
-    const unshusSnapshot = getDocs(unshusRef);
-    console.log(unshusSnapshot);
-  }, []);
+    const unshusRef = collection(db, 'unshu')
+    const unshusSnapshot = getDocs(unshusRef)
+    setMikan({
+      id: 'string',
+      userId: 'string',
+      taste: 10,
+      texture: 10,
+      note: 'string'
+    })
+    console.log(unshusSnapshot)
+  }, [])
 
   return (
     <div>
@@ -56,5 +64,5 @@ export const Mikan = () => {
         <textarea>{mikan.note}</textarea>
       </div>
     </div>
-  );
-};
+  )
+}

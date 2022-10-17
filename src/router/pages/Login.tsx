@@ -1,15 +1,16 @@
-import { useAuth } from "services/context/AuthProvider";
-import "styles/App.css";
+/* eslint-disable react/react-in-jsx-scope */
+import { useAuth } from '@/services/context/AuthProvider'
+import '@/styles/App.css'
 
-export const Login = () => {
-  const { currentUser, login, logout } = useAuth();
+export const Login = (): JSX.Element => {
+  const { currentUser, login, logout } = useAuth()
 
   return (
     <div className="App">
       <h1>Login</h1>
       <div>
-        {!currentUser && <button onClick={login}>Twitter Login</button>}
-        {currentUser && (
+        {currentUser == null && <button onClick={login}>Twitter Login</button>}
+        {currentUser != null && (
           <div>
             <div>
               <p>currentUser.email: {currentUser.email}</p>
@@ -20,7 +21,7 @@ export const Login = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

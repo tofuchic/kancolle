@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
-import logo from "icons/logo.svg";
-import "styles/App.css";
-import "services/auth/firebase";
+/* eslint-disable react/react-in-jsx-scope */
+import { useState } from 'react'
+import logo from '@/assets/logo.svg'
+import '@/styles/App.css'
+import '@/services/auth/firebase'
 
-export const Home = () => {
-  const [count, setCount] = useState(0);
+export const Home = (): JSX.Element => {
+  const [count, setCount] = useState(0)
   return (
     <div className="App">
       <header className="App-header">
@@ -27,7 +28,7 @@ export const Home = () => {
           >
             Learn React
           </a>
-          {" | "}
+          {' | '}
           <a
             className="App-link"
             href="https://vitejs.dev/guide/features.html"
@@ -39,5 +40,5 @@ export const Home = () => {
         </p>
       </header>
     </div>
-  );
-};
+  )
+}
