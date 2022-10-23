@@ -31,12 +31,6 @@ export const AuthProvider = ({ children }: Props): JSX.Element => {
   const [currentUser, setCurrentUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  // const login = () => {
-  //   const provider = new GithubAuthProvider();
-  //   provider.addScope("repo"); // 既定ではユーザー自身のemailを取得するスコープしか付与されない。必要に応じてスコープを追加する
-  //   return signInWithRedirect(auth, provider);
-  // };
-
   const login = async (): Promise<never> => {
     const provider = new TwitterAuthProvider()
     return await signInWithRedirect(auth, provider)
