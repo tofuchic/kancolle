@@ -37,6 +37,7 @@ export const MikanDetail = (): JSX.Element => {
 
   return (
     <div>
+      <h1>{import.meta.env.VITE_ENV_TEMP}</h1>
       <h1>{mikan.id}</h1>
       {/* {users.map((user) => (
         <div key={user.id}>
