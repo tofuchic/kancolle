@@ -12,6 +12,8 @@ interface Mikan {
   note: string
 }
 
+interface Mikans extends Array<Mikan> {}
+
 export const MikanDetail = (): JSX.Element => {
   const [mikan, setMikan] = useState<Mikan>({
     id: 'unshu',
@@ -22,18 +24,29 @@ export const MikanDetail = (): JSX.Element => {
   })
 
   useEffect(() => {
+    void getMikanItems()
+  }, [])
+
+  const getMikanItems = async (): Promise<void> => {
     // 取得結果をコンソールに出力
     const unshusRef = collection(db, 'unshu')
-    const unshusSnapshot = getDocs(unshusRef)
-    setMikan({
-      id: 'string',
-      userId: 'string',
-      taste: 10,
-      texture: 10,
-      note: 'string'
-    })
-    console.log(unshusSnapshot)
-  }, [])
+    const unshusSnapshot = await getDocs(unshusRef)
+    const unshuList = unshusSnapshot.docs.map((doc) => doc.data())
+    console.log('↓unshuList↓')
+    console.log(unshuList)
+    console.log('↑unshuList↑')
+    const allMikans: Mikans = [
+      {
+        id: 'unshu',
+        userId: 'userId',
+        taste: -10,
+        texture: 10,
+        note: 'memoです'
+      }
+    ]
+    console.log(allMikans)
+    setMikan(allMikans[0])
+  }
 
   return (
     <div>
