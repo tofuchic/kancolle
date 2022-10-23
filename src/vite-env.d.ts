@@ -11,7 +11,6 @@ interface ImportMetaEnv {
   readonly VITE_ENV_FIREBASE_MESSAGING_SENDER_ID: string
   readonly VITE_ENV_FIREBASE_APP_ID: string
   readonly VITE_ENV_FIREBASE_MEASUREMENT_ID: string
-  readonly VITE_ENV_TEMP: string
 }
 
 interface ImportMeta {

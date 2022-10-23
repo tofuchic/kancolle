@@ -56,7 +56,6 @@ jobs:
           envkey_VITE_ENV_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_ENV_FIREBASE_MESSAGING_SENDER_ID }}
           envkey_VITE_ENV_FIREBASE_APP_ID: ${{ secrets.VITE_ENV_FIREBASE_APP_ID }}
           envkey_VITE_ENV_FIREBASE_MEASUREMENT_ID: ${{ secrets.VITE_ENV_FIREBASE_MEASUREMENT_ID }}
-          envkey_VITE_ENV_TEMP: ${{ secrets.VITE_ENV_TEMP }}
           file_name: .env
           fail_on_empty: false
 
