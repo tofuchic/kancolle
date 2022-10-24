@@ -17,6 +17,9 @@
     "format": "prettier --write \"**/*.+(js|json|yml|ts|tsx)\""
   },
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/material": "^5.10.10",
     "eslint-plugin-react-hooks": "^4.6.0",
     "firebase": "^9.9.2",
     "gh-pages": "^4.0.0",

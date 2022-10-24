@@ -1,8 +1,9 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { useState, useEffect } from 'react'
-import { collection, getDocs } from 'firebase/firestore'
+import { doc, getDoc } from 'firebase/firestore'
 import logo from '@/assets/logo.svg'
-import { db } from '@/services/auth/firebase'
+import { auth, db } from '@/services/auth/firebase'
+import TextField from '@mui/material/TextField'
 
 interface Mikan {
   id: string
@@ -12,8 +13,6 @@ interface Mikan {
   note: string
 }
 
-interface Mikans extends Array<Mikan> {}
-
 export const MikanDetail = (): JSX.Element => {
   const [mikan, setMikan] = useState<Mikan>({
     id: 'unshu',
@@ -22,30 +21,63 @@ export const MikanDetail = (): JSX.Element => {
     texture: 10,
     note: 'memoです'
   })
+  const [mikanNote, setMikanNote] = useState<string>()
 
   useEffect(() => {
-    void getMikanItems()
+    void getMyMikanData()
   }, [])
 
-  const getMikanItems = async (): Promise<void> => {
-    // 取得結果をコンソールに出力
-    const unshusRef = collection(db, 'unshu')
-    const unshusSnapshot = await getDocs(unshusRef)
-    const unshuList = unshusSnapshot.docs.map((doc) => doc.data())
-    console.log('↓unshuList↓')
-    console.log(unshuList)
-    console.log('↑unshuList↑')
-    const allMikans: Mikans = [
-      {
+  const getMyMikanData = async (): Promise<void> => {
+    console.debug('auth.currentUser?.uid:', auth.currentUser?.uid)
+    const mikan = await getDoc(
+      doc(db, 'mikan', 'unshu', 'userId', String(auth.currentUser?.uid))
+    )
+    const mikanData = mikan.data()
+    console.debug('↓myMikan↓')
+    console.debug(mikanData)
+    console.debug('↑myMikan↑')
+
+    if (mikanData !== undefined) {
+      setMikan({
         id: 'unshu',
-        userId: 'userId',
-        taste: -10,
-        texture: 10,
-        note: 'memoです'
-      }
-    ]
-    console.log(allMikans)
-    setMikan(allMikans[0])
+        userId: String(auth.currentUser?.displayName),
+        taste: mikanData.taste,
+        texture: mikanData.texture,
+        note: mikanData.note
+      })
+      setMikanNote(mikanData.note)
+    }
+  }
+
+  // TODO: 皆のデータを取得してグラフにするよ
+  const getAllMikanData = async (): Promise<void> => {
+    // const myMikanQuery = query(
+    //   collection(db, 'mikan'),
+    //   where('userId', '==', auth.currentUser?.uid)
+    // )
+    // const myMikanDocument = await getDocs(myMikanQuery)
+    // const myMikan = myMikanDocument.docs.map((doc) => doc.data())
+    // // console.log('↓myMikan↓')
+    // // console.log(myMikan)
+    // // console.log('↑myMikan↑')
+    // const mikan = await getDoc(
+    //   doc(db, 'mikan', 'unshu', 'userId', String(auth.currentUser?.uid))
+    // )
+    // const mikanData = mikan.data()
+    // console.log('↓myMikan↓')
+    // console.log(mikanData)
+    // console.log('↑myMikan↑')
+    // if (mikanData !== undefined) {
+    //   const myMikan: Mikan = {
+    //     id: 'unshu',
+    //     userId: String(auth.currentUser?.displayName),
+    //     taste: mikanData.taste,
+    //     texture: mikanData.texture,
+    //     note: mikanData.note
+    //   }
+    //   console.log(myMikan)
+    //   setMikan(myMikan)
+    // }
   }
 
   return (
@@ -72,10 +104,14 @@ export const MikanDetail = (): JSX.Element => {
         {mikan.texture}
         <a>とろとろ</a>
       </div>
-      <div>
-        <h5>note</h5>
-        <textarea>{mikan.note}</textarea>
-      </div>
+      <TextField
+        id="outlined-multiline-static"
+        label="メモ"
+        multiline
+        rows={4}
+        defaultValue="メモを入力してください"
+        value={mikanNote}
+      />
     </div>
   )
 }
