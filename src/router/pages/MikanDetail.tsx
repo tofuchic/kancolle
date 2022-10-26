@@ -7,25 +7,57 @@ import TextField from '@mui/material/TextField'
 import Slider from '@mui/material/Slider'
 import Box from '@mui/material/Box'
 import styled from '@emotion/styled'
+import { useDebounce } from '@/hooks/useDebounce'
 
 interface Mikan {
   id: string
-  userId: string
-  taste: number
-  texture: number
-  note: string
+  userId?: string
+  taste?: number
+  texture?: number
+  note?: string
 }
 
 export const MikanDetail = (): JSX.Element => {
   const [loaded, setLoaded] = useState<boolean>(false)
   const [mikan, setMikan] = useState<Mikan>({
-    id: 'unshu',
-    userId: 'userId',
-    taste: 0,
-    texture: 0,
-    note: 'memoです'
+    id: 'unshu'
   })
-  const [mikanNote, setMikanNote] = useState<string>()
+  const [mikanNote, setMikanNote] = useState<string | null>(null)
+
+  useEffect(() => {
+    console.debug('useEffect')
+    void getMyMikanData()
+  }, [])
+
+  const getMyMikanData = async (): Promise<void> => {
+    console.debug('auth.currentUser?.uid:', auth.currentUser?.uid)
+    const mikan = await getDoc(
+      doc(db, 'mikan', 'unshu', 'userId', String(auth.currentUser?.uid))
+    )
+    const mikanData = mikan.data()
+    console.debug('↓myMikan↓')
+    console.debug(mikanData)
+    console.debug('↑myMikan↑')
+
+    if (mikanData !== undefined) {
+      setMikan({
+        id: 'unshu',
+        userId: String(auth.currentUser?.displayName),
+        taste: mikanData.taste,
+        texture: mikanData.texture,
+        note: mikanData.note
+      })
+    } else {
+      setMikan({
+        id: 'unshu',
+        userId: String(auth.currentUser?.displayName),
+        taste: 0,
+        texture: 0,
+        note: 'メモを入力してください'
+      })
+    }
+    setLoaded(true)
+  }
 
   function mikanTaste(value: number): string {
     return `${value}`
@@ -61,6 +93,24 @@ export const MikanDetail = (): JSX.Element => {
     })
   }
 
+  function mikanNoteChange(): void {
+    const innerText = (
+      document.getElementById('outlined-multiline-static') as HTMLInputElement
+    ).value
+    setMikan({
+      id: mikan.id,
+      userId: mikan.userId,
+      taste: mikan.taste,
+      texture: mikan.texture,
+      note: innerText
+    })
+  }
+
+  const debouncedInputText = useDebounce(mikanNote, 500)
+  const handleMikanNoteChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => setMikanNote(event.target.value)
+
   function patchMikan(
     _event: React.SyntheticEvent | Event,
     _value: number | number[]
@@ -69,33 +119,7 @@ export const MikanDetail = (): JSX.Element => {
     void patchMyMikanData()
   }
 
-  useEffect(() => {
-    void getMyMikanData()
-  }, [])
-
-  const getMyMikanData = async (): Promise<void> => {
-    console.debug('auth.currentUser?.uid:', auth.currentUser?.uid)
-    const mikan = await getDoc(
-      doc(db, 'mikan', 'unshu', 'userId', String(auth.currentUser?.uid))
-    )
-    const mikanData = mikan.data()
-    console.debug('↓myMikan↓')
-    console.debug(mikanData)
-    console.debug('↑myMikan↑')
-
-    if (mikanData !== undefined) {
-      setMikan({
-        id: 'unshu',
-        userId: String(auth.currentUser?.displayName),
-        taste: mikanData.taste,
-        texture: mikanData.texture,
-        note: mikanData.note
-      })
-      setMikanNote(mikanData.note)
-      setLoaded(true)
-    }
-  }
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const patchMyMikanData = async (): Promise<void> => {
     console.debug('auth.currentUser?.uid:', auth.currentUser?.uid)
     const mikanRef = doc(
@@ -115,36 +139,10 @@ export const MikanDetail = (): JSX.Element => {
     await setDoc(mikanRef, updateMikan)
   }
 
-  // TODO: 皆のデータを取得してグラフにするよ
-  const getAllMikanData = async (): Promise<void> => {
-    // const myMikanQuery = query(
-    //   collection(db, 'mikan'),
-    //   where('userId', '==', auth.currentUser?.uid)
-    // )
-    // const myMikanDocument = await getDocs(myMikanQuery)
-    // const myMikan = myMikanDocument.docs.map((doc) => doc.data())
-    // // console.log('↓myMikan↓')
-    // // console.log(myMikan)
-    // // console.log('↑myMikan↑')
-    // const mikan = await getDoc(
-    //   doc(db, 'mikan', 'unshu', 'userId', String(auth.currentUser?.uid))
-    // )
-    // const mikanData = mikan.data()
-    // console.log('↓myMikan↓')
-    // console.log(mikanData)
-    // console.log('↑myMikan↑')
-    // if (mikanData !== undefined) {
-    //   const myMikan: Mikan = {
-    //     id: 'unshu',
-    //     userId: String(auth.currentUser?.displayName),
-    //     taste: mikanData.taste,
-    //     texture: mikanData.texture,
-    //     note: mikanData.note
-    //   }
-    //   console.log(myMikan)
-    //   setMikan(myMikan)
-    // }
-  }
+  useEffect(() => {
+    console.debug('useEffect with debounce')
+    void patchMyMikanData()
+  }, [debouncedInputText, patchMyMikanData])
 
   return (
     <div>
@@ -210,8 +208,9 @@ export const MikanDetail = (): JSX.Element => {
             label="メモ"
             multiline
             rows={4}
-            defaultValue="メモを入力してください"
-            value={mikanNote}
+            defaultValue={mikan.note}
+            onKeyUp={mikanNoteChange}
+            onChange={handleMikanNoteChange}
           />
         </>
       )}
