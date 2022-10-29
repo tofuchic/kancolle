@@ -147,7 +147,9 @@ export const MikanDetail = (props: any) => {
     <div>
       <h1>{mikan.id}</h1>
       <div>
-        <img src={'./public/mikan/' + displayName + '.png'} />
+        <img
+          src={`https://github.com/tofuchic/kancolle/raw/main/public/mikan/${displayName}.png`}
+        />
       </div>
       {loaded && (
         <>
