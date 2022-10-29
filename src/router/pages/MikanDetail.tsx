@@ -17,10 +17,13 @@ interface Mikan {
   note?: string
 }
 
-export const MikanDetail = (): JSX.Element => {
+export const MikanDetail = (props: any) => {
+  const { displayName } = props
+  // const images = require.context('@/assets/mikan', true);
+  // const loadImage = (imageName: string) => (images(`./${imageName}`).default);
   const [loaded, setLoaded] = useState<boolean>(false)
   const [mikan, setMikan] = useState<Mikan>({
-    id: 'unshu'
+    id: displayName
   })
   const [mikanNote, setMikanNote] = useState<string | null>(null)
 
@@ -32,7 +35,7 @@ export const MikanDetail = (): JSX.Element => {
   const getMyMikanData = async (): Promise<void> => {
     console.debug('auth.currentUser?.uid:', auth.currentUser?.uid)
     const mikan = await getDoc(
-      doc(db, 'mikan', 'unshu', 'userId', String(auth.currentUser?.uid))
+      doc(db, 'mikan', displayName, 'userId', String(auth.currentUser?.uid))
     )
     const mikanData = mikan.data()
     console.debug('↓myMikan↓')
@@ -41,7 +44,7 @@ export const MikanDetail = (): JSX.Element => {
 
     if (mikanData !== undefined) {
       setMikan({
-        id: 'unshu',
+        id: displayName,
         userId: String(auth.currentUser?.displayName),
         taste: mikanData.taste,
         texture: mikanData.texture,
@@ -49,7 +52,7 @@ export const MikanDetail = (): JSX.Element => {
       })
     } else {
       setMikan({
-        id: 'unshu',
+        id: displayName,
         userId: String(auth.currentUser?.displayName),
         taste: 0,
         texture: 0,
@@ -94,9 +97,8 @@ export const MikanDetail = (): JSX.Element => {
   }
 
   function mikanNoteChange(): void {
-    const innerText = (
-      document.getElementById('outlined-multiline-static') as HTMLInputElement
-    ).value
+    const innerText = (document.getElementById(displayName) as HTMLInputElement)
+      .value
     setMikan({
       id: mikan.id,
       userId: mikan.userId,
@@ -125,7 +127,7 @@ export const MikanDetail = (): JSX.Element => {
     const mikanRef = doc(
       db,
       'mikan',
-      'unshu',
+      displayName,
       'userId',
       String(auth.currentUser?.uid)
     )
@@ -148,7 +150,10 @@ export const MikanDetail = (): JSX.Element => {
     <div>
       <h1>{mikan.id}</h1>
       <div>
-        <img src={logo} className="App-logo" alt="logo" />
+        {/* <img src={require('@/assets/'+displayName+'.png')} /> */}
+        <img src={'./src/assets/mikan/' + displayName + '.png'} />
+        {/* <img src={loadImage(displayName+".png")} alt="" /> */}
+        {/* <img src={logo} className="App-logo" alt="logo" /> */}
       </div>
       {loaded && (
         <>
@@ -204,7 +209,7 @@ export const MikanDetail = (): JSX.Element => {
             <a>とろとろ</a>
           </div>
           <TextField
-            id="outlined-multiline-static"
+            id={displayName}
             label="メモ"
             multiline
             rows={4}
