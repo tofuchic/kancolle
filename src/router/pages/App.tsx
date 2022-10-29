@@ -4,13 +4,13 @@ import { AuthProvider } from '@/services/context/AuthProvider'
 
 import { Home } from './Home'
 import { Login } from './Login'
-import { MikanDetail } from './MikanDetail'
+import { MikanDetails } from './MikanDetails'
 
 const RootRoutes = (): JSX.Element | null => {
   return useRoutes([
     { path: '/home', element: <Home /> },
     { path: '/login', element: <Login /> },
-    { path: '/mikan', element: <MikanDetail /> }
+    { path: '/mikan', element: <MikanDetails /> }
   ])
 }
 
@@ -26,7 +26,7 @@ export const App: React.FunctionComponent = () => {
             <Link to="/login">Login</Link>
           </li>
           <li>
-            <Link to="/mikan">Mikan</Link>
+            <Link to="/mikan?displayName=cut_fruit_orange,fruit_ao_mikan">Mikan</Link>
           </li>
         </ul>
       </nav>
