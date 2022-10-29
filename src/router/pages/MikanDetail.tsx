@@ -18,7 +18,7 @@ interface Mikan {
 }
 
 export const MikanDetail = (props: any) => {
-  const {displayName} = props
+  const { displayName } = props
   // const images = require.context('@/assets/mikan', true);
   // const loadImage = (imageName: string) => (images(`./${imageName}`).default);
   const [loaded, setLoaded] = useState<boolean>(false)
@@ -97,9 +97,8 @@ export const MikanDetail = (props: any) => {
   }
 
   function mikanNoteChange(): void {
-    const innerText = (
-      document.getElementById(displayName) as HTMLInputElement
-    ).value
+    const innerText = (document.getElementById(displayName) as HTMLInputElement)
+      .value
     setMikan({
       id: mikan.id,
       userId: mikan.userId,
@@ -152,7 +151,7 @@ export const MikanDetail = (props: any) => {
       <h1>{mikan.id}</h1>
       <div>
         {/* <img src={require('@/assets/'+displayName+'.png')} /> */}
-        <img src={'./src/assets/mikan/'+displayName+'.png'} />
+        <img src={'./src/assets/mikan/' + displayName + '.png'} />
         {/* <img src={loadImage(displayName+".png")} alt="" /> */}
         {/* <img src={logo} className="App-logo" alt="logo" /> */}
       </div>

@@ -1,45 +1,42 @@
-import styled from "@emotion/styled"
-import { MikanDetail } from "./MikanDetail"
+import styled from '@emotion/styled'
+import { MikanDetail } from './MikanDetail'
 import { useLocation } from 'react-router-dom'
 import queryString from 'query-string'
 
 export const MikanDetails = (): JSX.Element => {
-    const query = useLocation().search;
-    const parsedQuery = queryString.parse(query, {arrayFormat: 'comma'})
+  const query = useLocation().search
+  const parsedQuery = queryString.parse(query, { arrayFormat: 'comma' })
 
-    console.debug("parsedQuery: "+parsedQuery.displayName);
+  console.debug('parsedQuery: ' + parsedQuery.displayName)
 
-    const displayNames = parsedQuery.displayName
+  const displayNames = parsedQuery.displayName
 
-    const MikanDetailList = () => {
-        if(displayNames==null){
-            return (
-                <div>表示するみかんがありません</div>
-            )
-        }else if(typeof displayNames == 'string'){
-            return (
-                <div>
-                    <MikanDetail displayName={displayNames}/>
-                </div>
-            )
-        }else{
-            const list = displayNames.map(displayName => {
-                    return (
-                        <div>
-                            <MikanDetail displayName={displayName}/>
-                        </div>
-                    )
-                }
-            )
-            return <>{list}</>
-        }
+  const MikanDetailList = () => {
+    if (displayNames == null) {
+      return <div>表示するみかんがありません</div>
+    } else if (typeof displayNames == 'string') {
+      return (
+        <div>
+          <MikanDetail displayName={displayNames} />
+        </div>
+      )
+    } else {
+      const list = displayNames.map((displayName) => {
+        return (
+          <div>
+            <MikanDetail displayName={displayName} />
+          </div>
+        )
+      })
+      return <>{list}</>
     }
+  }
 
-    return (
+  return (
     <div>
-        <Wrapper>
-            <MikanDetailList></MikanDetailList>
-        </Wrapper>
+      <Wrapper>
+        <MikanDetailList></MikanDetailList>
+      </Wrapper>
     </div>
   )
 }
