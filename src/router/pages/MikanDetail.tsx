@@ -1,7 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { useState, useEffect } from 'react'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
-import logo from '@/assets/logo.svg'
+import '@/assets/mikan'
 import { auth, db } from '@/services/auth/firebase'
 import TextField from '@mui/material/TextField'
 import Slider from '@mui/material/Slider'
@@ -19,8 +19,6 @@ interface Mikan {
 
 export const MikanDetail = (props: any) => {
   const { displayName } = props
-  // const images = require.context('@/assets/mikan', true);
-  // const loadImage = (imageName: string) => (images(`./${imageName}`).default);
   const [loaded, setLoaded] = useState<boolean>(false)
   const [mikan, setMikan] = useState<Mikan>({
     id: displayName
@@ -150,10 +148,7 @@ export const MikanDetail = (props: any) => {
     <div>
       <h1>{mikan.id}</h1>
       <div>
-        {/* <img src={require('@/assets/'+displayName+'.png')} /> */}
         <img src={'./src/assets/mikan/' + displayName + '.png'} />
-        {/* <img src={loadImage(displayName+".png")} alt="" /> */}
-        {/* <img src={logo} className="App-logo" alt="logo" /> */}
       </div>
       {loaded && (
         <>
@@ -198,16 +193,6 @@ export const MikanDetail = (props: any) => {
               </Wrapper>
             </TateWrapper>
           </>
-          <div>
-            <a>酸っぱさ</a>
-            {mikan.taste}
-            <a>甘さ</a>
-          </div>
-          <div>
-            <a>しゃきしゃき</a>
-            {mikan.texture}
-            <a>とろとろ</a>
-          </div>
           <TextField
             id={displayName}
             label="メモ"
