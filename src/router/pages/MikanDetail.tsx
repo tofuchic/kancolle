@@ -1,7 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { useState, useEffect } from 'react'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
-import '@/assets/mikan'
 import { auth, db } from '@/services/auth/firebase'
 import TextField from '@mui/material/TextField'
 import Slider from '@mui/material/Slider'
@@ -148,7 +147,7 @@ export const MikanDetail = (props: any) => {
     <div>
       <h1>{mikan.id}</h1>
       <div>
-        <img src={'./src/assets/mikan/' + displayName + '.png'} />
+        <img src={'./public/mikan/' + displayName + '.png'} />
       </div>
       {loaded && (
         <>
