@@ -53,7 +53,7 @@ export const MikanDetail = (props: any) => {
         userId: String(auth.currentUser?.displayName),
         taste: 0,
         texture: 0,
-        note: 'メモを入力してください'
+        note: ''
       })
     }
     setLoaded(true)
@@ -200,6 +200,7 @@ export const MikanDetail = (props: any) => {
             multiline
             rows={4}
             defaultValue={mikan.note}
+            placeholder="メモを入力してください"
             onKeyUp={mikanNoteChange}
             onChange={handleMikanNoteChange}
           />
