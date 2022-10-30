@@ -6,7 +6,7 @@ import { Home } from './Home'
 import { Login } from './Login'
 import { MikanDetails } from './MikanDetails'
 
-const RootRoutes = (): JSX.Element | null => {
+const RootRoutes = (): React.ReactElement | null => {
   return useRoutes([
     { path: '/home', element: <Home /> },
     { path: '/login', element: <Login /> },

@@ -15,7 +15,7 @@ interface Mikan {
   note?: string
 }
 
-export const MikanDetail = (props: any): JSX.Element => {
+export const MikanDetail = (props: any): React.ReactElement => {
   const { displayName } = props
   const [loaded, setLoaded] = useState<boolean>(false)
   const [mikan, setMikan] = useState<Mikan>({
