@@ -31,8 +31,8 @@ export class MikanTotal extends Component<{}, { options: any; series: any }> {
               'https://github.com/tofuchic/kancolle/raw/main/public/mikan/fruit_ao_mikan.png',
               'https://github.com/tofuchic/kancolle/raw/main/public/mikan/fruit_cut_orange.png'
             ],
-            width: 25,
-            height: 25
+            width: 20,
+            height: 20
           }
         },
         grid: {
