@@ -5,12 +5,14 @@ import { AuthProvider } from '@/services/context/AuthProvider'
 import { Home } from './Home'
 import { Login } from './Login'
 import { MikanDetails } from './MikanDetails'
+import { MikanTotal } from './MikanTotal'
 
 const RootRoutes = (): React.ReactElement | null => {
   return useRoutes([
     { path: '/home', element: <Home /> },
     { path: '/login', element: <Login /> },
-    { path: '/mikan', element: <MikanDetails /> }
+    { path: '/mikan', element: <MikanDetails /> },
+    { path: '/total', element: <MikanTotal /> }
   ])
 }
 
@@ -29,6 +31,9 @@ export const App: React.FunctionComponent = () => {
             <Link to="/mikan?displayName=cut_fruit_orange,fruit_ao_mikan">
               Mikan
             </Link>
+          </li>
+          <li>
+            <Link to="/total">集計</Link>
           </li>
         </ul>
       </nav>
