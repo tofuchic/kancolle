@@ -9,16 +9,66 @@ export class MikanTotal extends Component<{}, { options: any; series: any }> {
     this.state = {
       options: {
         chart: {
-          id: 'apexchart-example'
+          height: 350,
+          type: 'scatter',
+          animations: {
+            enabled: false
+          },
+          zoom: {
+            enabled: false
+          },
+          toolbar: {
+            show: false
+          }
         },
+        colors: ['#056BF6', '#D2376A'],
         xaxis: {
-          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+          tickAmount: 10,
+          min: 0,
+          max: 40
+        },
+        yaxis: {
+          tickAmount: 7
+        },
+        markers: {
+          size: 20
+        },
+        fill: {
+          type: 'image',
+          opacity: 1,
+          image: {
+            src: [
+              '../../assets/images/ico-messenger.png',
+              '../../assets/images/ico-instagram.png'
+            ],
+            width: 40,
+            height: 40
+          }
+        },
+        legend: {
+          labels: {
+            useSeriesColors: true
+          },
+          markers: {
+            customHTML: [
+              function () {
+                return ''
+              },
+              function () {
+                return ''
+              }
+            ]
+          }
         }
       },
       series: [
         {
-          name: 'series-1',
-          data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
+          name: 'mikan_a',
+          data: [16.4, 5.4]
+        },
+        {
+          name: 'mikan_b',
+          data: [10.4, -5.4]
         }
       ]
     }
