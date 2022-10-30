@@ -1,4 +1,3 @@
-/* eslint-disable react/react-in-jsx-scope */
 import { useAuth } from '@/services/context/AuthProvider'
 import '@/styles/App.css'
 

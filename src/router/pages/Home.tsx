@@ -1,4 +1,3 @@
-/* eslint-disable react/react-in-jsx-scope */
 import { useState } from 'react'
 import logo from '@/assets/logo.svg'
 import '@/styles/App.css'
