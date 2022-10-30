@@ -3,6 +3,7 @@ import '@/styles/App.css'
 import '@/services/auth/firebase'
 import Chart from 'react-apexcharts'
 import styled from '@emotion/styled'
+import { MikanDetail } from './MikanDetail'
 
 interface DatabaseMikan {
   userId: string
@@ -92,7 +93,10 @@ const CALC_REVIEW_AVERAGE = (inputList: DatabaseMikan[]): [number, number] => {
   return [averageTaste, averageTexture]
 }
 
-export class MikanTotal extends Component<{}, { options: any; series: any }> {
+export class MikanTotal extends Component<
+  {},
+  { options: any; series: any; displayName: string | null }
+> {
   constructor(props: any) {
     super(props)
     this.state = {
@@ -145,6 +149,7 @@ export class MikanTotal extends Component<{}, { options: any; series: any }> {
           theme: 'dark',
           custom: ({ seriesIndex, w }: any) => {
             const data = w.globals.initialSeries[seriesIndex]
+            this.setState({ displayName: data.name })
             return data.name
           }
         },
@@ -208,31 +213,49 @@ export class MikanTotal extends Component<{}, { options: any; series: any }> {
           type: 'scatter',
           data: [CALC_REVIEW_AVERAGE(testData03.data)]
         }
-      ]
+      ],
+      displayName: null
+    }
+  }
+
+  MikanIfExists = (): React.ReactElement => {
+    if (this.state.displayName == null) {
+      return <></>
+    } else {
+      return (
+        <div>
+          <MikanDetail displayName={this.state.displayName} />
+        </div>
+      )
     }
   }
 
   render(): JSX.Element {
     return (
-      <TateWrapper>
-        <YokoWrapper>
-          <Column>とろとろ</Column>
-        </YokoWrapper>
-        <YokoWrapper>
-          <Column>酸っぱい</Column>
-          <Chart
-            options={this.state.options}
-            series={this.state.series}
-            type="scatter"
-            width={480}
-            height={480}
-          />
-          <Column>甘い</Column>
-        </YokoWrapper>
-        <YokoWrapper>
-          <Column>しゃきしゃき</Column>
-        </YokoWrapper>
-      </TateWrapper>
+      <>
+        <TateWrapper>
+          <YokoWrapper>
+            <Column>とろとろ</Column>
+          </YokoWrapper>
+          <YokoWrapper>
+            <Column>酸っぱい</Column>
+            <Chart
+              options={this.state.options}
+              series={this.state.series}
+              type="scatter"
+              width={480}
+              height={480}
+            />
+            <Column>甘い</Column>
+          </YokoWrapper>
+          <YokoWrapper>
+            <Column>しゃきしゃき</Column>
+          </YokoWrapper>
+          <YokoWrapper>
+            <this.MikanIfExists></this.MikanIfExists>
+          </YokoWrapper>
+        </TateWrapper>
+      </>
     )
   }
 }
