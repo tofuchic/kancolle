@@ -1,10 +1,9 @@
-/* eslint-disable react/react-in-jsx-scope */
 import { useState } from 'react'
 import logo from '@/assets/logo.svg'
 import '@/styles/App.css'
 import '@/services/auth/firebase'
 
-export const Home = (): JSX.Element => {
+export const Home = (): React.ReactElement => {
   const [count, setCount] = useState(0)
   return (
     <div className="App">
