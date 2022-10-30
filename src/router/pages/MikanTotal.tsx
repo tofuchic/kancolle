@@ -4,6 +4,94 @@ import '@/services/auth/firebase'
 import Chart from 'react-apexcharts'
 import styled from '@emotion/styled'
 
+interface DatabaseMikan {
+  userId: string
+  data: {
+    taste: number
+    texture: number
+  }
+}
+
+interface DatabaseAllMikan {
+  name: string
+  data: DatabaseMikan[]
+}
+
+const testData01: DatabaseAllMikan = {
+  name: 'cut_fruit_orange',
+  data: [
+    {
+      userId: 'person1',
+      data: {
+        taste: 5,
+        texture: 5
+      }
+    }
+  ]
+}
+
+const testData02: DatabaseAllMikan = {
+  name: 'fruit_ao_mikan',
+  data: [
+    {
+      userId: 'person1',
+      data: {
+        taste: -5,
+        texture: -5
+      }
+    }
+  ]
+}
+
+const testData03: DatabaseAllMikan = {
+  name: 'fruit_cut_orange',
+  data: [
+    {
+      userId: 'person1',
+      data: {
+        taste: 2,
+        texture: 1
+      }
+    },
+    {
+      userId: 'person2',
+      data: {
+        taste: 1,
+        texture: 1
+      }
+    },
+    {
+      userId: 'person3',
+      data: {
+        taste: 3,
+        texture: 3
+      }
+    },
+    {
+      userId: 'person4',
+      data: {
+        taste: 4,
+        texture: -1
+      }
+    },
+    {
+      userId: 'person5',
+      data: {
+        taste: -3,
+        texture: 2
+      }
+    }
+  ]
+}
+
+const CALC_REVIEW_AVERAGE = (inputList: DatabaseMikan[]): [number, number] => {
+  const tastes = inputList.map((obj) => obj.data.taste)
+  const averageTaste = tastes.reduce((a, b) => a + b, 0) / tastes.length
+  const textures = inputList.map((obj) => obj.data.texture)
+  const averageTexture = textures.reduce((a, b) => a + b, 0) / textures.length
+  return [averageTaste, averageTexture]
+}
+
 export class MikanTotal extends Component<{}, { options: any; series: any }> {
   constructor(props: any) {
     super(props)
@@ -106,19 +194,19 @@ export class MikanTotal extends Component<{}, { options: any; series: any }> {
       },
       series: [
         {
-          name: 'cut_fruit_orange',
+          name: testData01.name,
           type: 'scatter',
-          data: [[5, 5]]
+          data: [CALC_REVIEW_AVERAGE(testData01.data)]
         },
         {
-          name: 'fruit_ao_mikan',
+          name: testData02.name,
           type: 'scatter',
-          data: [[-5, -5]]
+          data: [CALC_REVIEW_AVERAGE(testData02.data)]
         },
         {
-          name: 'fruit_cut_orange',
+          name: testData03.name,
           type: 'scatter',
-          data: [[3.5, 1.2]]
+          data: [CALC_REVIEW_AVERAGE(testData03.data)]
         }
       ]
     }
