@@ -2,6 +2,7 @@ import { Component } from 'react'
 import '@/styles/App.css'
 import '@/services/auth/firebase'
 import Chart from 'react-apexcharts'
+import styled from '@emotion/styled'
 
 export class MikanTotal extends Component<{}, { options: any; series: any }> {
   constructor(props: any) {
@@ -9,10 +10,10 @@ export class MikanTotal extends Component<{}, { options: any; series: any }> {
     this.state = {
       options: {
         chart: {
-          height: 350,
+          height: 480,
           type: 'scatter',
           animations: {
-            enabled: false
+            enabled: true
           },
           zoom: {
             enabled: false
@@ -21,54 +22,103 @@ export class MikanTotal extends Component<{}, { options: any; series: any }> {
             show: false
           }
         },
-        colors: ['#056BF6', '#D2376A'],
-        xaxis: {
-          tickAmount: 10,
-          min: 0,
-          max: 40
-        },
-        yaxis: {
-          tickAmount: 7
-        },
-        markers: {
-          size: 20
-        },
         fill: {
           type: 'image',
-          opacity: 1,
+          opacity: 0.8,
           image: {
             src: [
-              '../../assets/images/ico-messenger.png',
-              '../../assets/images/ico-instagram.png'
+              'https://github.com/tofuchic/kancolle/raw/main/public/mikan/cut_fruit_orange.png',
+              'https://github.com/tofuchic/kancolle/raw/main/public/mikan/fruit_ao_mikan.png',
+              'https://github.com/tofuchic/kancolle/raw/main/public/mikan/fruit_cut_orange.png'
             ],
-            width: 40,
-            height: 40
+            width: 25,
+            height: 25
+          }
+        },
+        grid: {
+          xaxis: {
+            lines: {
+              show: true
+            }
+          },
+          yaxis: {
+            lines: {
+              show: true
+            }
           }
         },
         legend: {
-          labels: {
-            useSeriesColors: true
+          show: false
+        },
+        markers: {
+          size: 10
+        },
+        tooltip: {
+          theme: 'dark',
+          custom: ({ seriesIndex, w }: any) => {
+            const data = w.globals.initialSeries[seriesIndex]
+            return data.name
+          }
+        },
+        xaxis: {
+          type: 'numeric',
+          tickAmount: 10,
+          min: -5,
+          max: 5,
+          axisBorder: {
+            show: true,
+            color: '#78909C',
+            height: 1,
+            width: '100%',
+            offsetX: 0,
+            offsetY: 0
           },
-          markers: {
-            customHTML: [
-              function () {
-                return ''
-              },
-              function () {
-                return ''
-              }
-            ]
+          axisTicks: {
+            show: true,
+            borderType: 'solid',
+            color: '#78909C',
+            height: 4,
+            offsetX: 0,
+            offsetY: 0
+          }
+        },
+        yaxis: {
+          tickAmount: 10,
+          min: -5.0,
+          max: 5.0,
+          axisBorder: {
+            show: true,
+            color: '#78909C',
+            height: '100%',
+            width: 1,
+            offsetX: 0,
+            offsetY: 0
+          },
+          axisTicks: {
+            show: true,
+            borderType: 'solid',
+            color: '#78909C',
+            width: 4,
+            offsetX: -0,
+            offsetY: 0
           }
         }
       },
       series: [
         {
-          name: 'mikan_a',
-          data: [16.4, 5.4]
+          name: 'cut_fruit_orange',
+          type: 'scatter',
+          data: [[5, 5]]
         },
         {
-          name: 'mikan_b',
-          data: [10.4, -5.4]
+          name: 'fruit_ao_mikan',
+          type: 'scatter',
+          data: [[-5, -5]]
+        },
+        {
+          name: 'fruit_cut_orange',
+          type: 'scatter',
+          data: [[3.5, 1.2]]
         }
       ]
     }
@@ -76,13 +126,44 @@ export class MikanTotal extends Component<{}, { options: any; series: any }> {
 
   render(): JSX.Element {
     return (
-      <Chart
-        options={this.state.options}
-        series={this.state.series}
-        type="bar"
-        width={500}
-        height={320}
-      />
+      <TateWrapper>
+        <YokoWrapper>
+          <Column>とろとろ</Column>
+        </YokoWrapper>
+        <YokoWrapper>
+          <Column>酸っぱい</Column>
+          <Chart
+            options={this.state.options}
+            series={this.state.series}
+            type="scatter"
+            width={480}
+            height={480}
+          />
+          <Column>甘い</Column>
+        </YokoWrapper>
+        <YokoWrapper>
+          <Column>しゃきしゃき</Column>
+        </YokoWrapper>
+      </TateWrapper>
     )
   }
 }
+
+const TateWrapper = styled.section`
+  align-items: center;
+  width: 720px;
+`
+
+const YokoWrapper = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const Column = styled.span`
+  margin-left: 24px;
+  margin-right: 24px;
+  width: 100px;
+  display: block;
+  text-align: center;
+`
