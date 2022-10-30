@@ -33,7 +33,7 @@ export const Button = ({
   backgroundColor,
   label,
   ...props
-}: ButtonProps): JSX.Element => {
+}: ButtonProps): React.ReactElement => {
   const mode = primary
     ? 'storybook-button--primary'
     : 'storybook-button--secondary'

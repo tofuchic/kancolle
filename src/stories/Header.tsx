@@ -19,7 +19,7 @@ export const Header = ({
   onLogin,
   onLogout,
   onCreateAccount
-}: HeaderProps): JSX.Element => (
+}: HeaderProps): React.ReactElement => (
   <header>
     <div className="wrapper">
       <div>

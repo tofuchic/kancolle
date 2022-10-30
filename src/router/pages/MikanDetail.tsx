@@ -1,5 +1,4 @@
-/* eslint-disable react/react-in-jsx-scope */
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { auth, db } from '@/services/auth/firebase'
 import TextField from '@mui/material/TextField'
@@ -16,7 +15,7 @@ interface Mikan {
   note?: string
 }
 
-export const MikanDetail = (props: any) => {
+export const MikanDetail = (props: any): React.ReactElement => {
   const { displayName } = props
   const [loaded, setLoaded] = useState<boolean>(false)
   const [mikan, setMikan] = useState<Mikan>({
@@ -27,7 +26,7 @@ export const MikanDetail = (props: any) => {
   useEffect(() => {
     console.debug('useEffect')
     void getMyMikanData()
-  }, [])
+  })
 
   const getMyMikanData = async (): Promise<void> => {
     console.debug('auth.currentUser?.uid:', auth.currentUser?.uid)
@@ -148,7 +147,9 @@ export const MikanDetail = (props: any) => {
       <h1>{mikan.id}</h1>
       <div>
         <img
-          src={`https://github.com/tofuchic/kancolle/raw/main/public/mikan/${displayName}.png`}
+          src={`https://github.com/tofuchic/kancolle/raw/main/public/mikan/${
+            displayName as string
+          }.png`}
         />
       </div>
       {loaded && (

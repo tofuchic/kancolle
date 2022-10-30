@@ -1,8 +1,7 @@
-/* eslint-disable react/react-in-jsx-scope */
 import { useAuth } from '@/services/context/AuthProvider'
 import '@/styles/App.css'
 
-export const Login = (): JSX.Element => {
+export const Login = (): React.ReactElement => {
   const { currentUser, login, logout } = useAuth()
 
   return (

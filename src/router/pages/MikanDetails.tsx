@@ -3,18 +3,18 @@ import { MikanDetail } from './MikanDetail'
 import { useLocation } from 'react-router-dom'
 import queryString from 'query-string'
 
-export const MikanDetails = (): JSX.Element => {
+export const MikanDetails = (): React.ReactElement => {
   const query = useLocation().search
   const parsedQuery = queryString.parse(query, { arrayFormat: 'comma' })
 
-  console.debug('parsedQuery: ' + parsedQuery.displayName)
+  console.debug('parsedQuery: ' + String(parsedQuery.displayName))
 
   const displayNames = parsedQuery.displayName
 
-  const MikanDetailList = () => {
+  const MikanDetailList = (): React.ReactElement => {
     if (displayNames == null) {
       return <div>表示するみかんがありません</div>
-    } else if (typeof displayNames == 'string') {
+    } else if (typeof displayNames === 'string') {
       return (
         <div>
           <MikanDetail displayName={displayNames} />
@@ -23,7 +23,7 @@ export const MikanDetails = (): JSX.Element => {
     } else {
       const list = displayNames.map((displayName) => {
         return (
-          <div>
+          <div key={displayName}>
             <MikanDetail displayName={displayName} />
           </div>
         )

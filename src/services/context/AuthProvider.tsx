@@ -1,4 +1,3 @@
-/* eslint-disable react/react-in-jsx-scope */
 import { createContext, useState, useContext, ReactNode } from 'react'
 import { auth } from '@/services/auth/firebase'
 import {
@@ -27,7 +26,7 @@ interface Props {
   children?: ReactNode
 }
 
-export const AuthProvider = ({ children }: Props): JSX.Element => {
+export const AuthProvider = ({ children }: Props): React.ReactElement => {
   const [currentUser, setCurrentUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
