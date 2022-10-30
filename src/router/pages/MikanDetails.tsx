@@ -1,31 +1,31 @@
-import styled from '@emotion/styled'
 import { MikanDetail } from './MikanDetail'
 import { useLocation } from 'react-router-dom'
+import { Container, Grid } from '@mui/material'
 import queryString from 'query-string'
 
 export const MikanDetails = (): JSX.Element => {
   const query = useLocation().search
   const parsedQuery = queryString.parse(query, { arrayFormat: 'comma' })
 
-  console.debug('parsedQuery: ' + parsedQuery.displayName)
+  console.debug('parsedQuery: ' + String(parsedQuery.displayName))
 
   const displayNames = parsedQuery.displayName
 
   const MikanDetailList = () => {
     if (displayNames == null) {
       return <div>表示するみかんがありません</div>
-    } else if (typeof displayNames == 'string') {
+    } else if (typeof displayNames === 'string') {
       return (
-        <div>
+        <Grid xs={12} md={6}>
           <MikanDetail displayName={displayNames} />
-        </div>
+        </Grid>
       )
     } else {
       const list = displayNames.map((displayName) => {
         return (
-          <div>
+          <Grid xs={12} md={6} key={displayName}>
             <MikanDetail displayName={displayName} />
-          </div>
+          </Grid>
         )
       })
       return <>{list}</>
@@ -33,15 +33,10 @@ export const MikanDetails = (): JSX.Element => {
   }
 
   return (
-    <div>
-      <Wrapper>
+    <Container>
+      <Grid container spacing={0.5}>
         <MikanDetailList></MikanDetailList>
-      </Wrapper>
-    </div>
+      </Grid>
+    </Container>
   )
 }
-
-const Wrapper = styled.section`
-  display: flex;
-  align-items: center;
-`

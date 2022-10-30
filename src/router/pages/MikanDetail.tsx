@@ -2,9 +2,7 @@
 import { useState, useEffect } from 'react'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { auth, db } from '@/services/auth/firebase'
-import TextField from '@mui/material/TextField'
-import Slider from '@mui/material/Slider'
-import Box from '@mui/material/Box'
+import { Grid, TextField, Slider, Box } from '@mui/material'
 import styled from '@emotion/styled'
 import { useDebounce } from '@/hooks/useDebounce'
 
@@ -146,21 +144,24 @@ export const MikanDetail = (props: any) => {
   return (
     <div>
       <h1>{mikan.id}</h1>
-      <div>
+      <div style={{ textAlign: 'center' }}>
         <img
+          className="image-mikan"
           src={`https://github.com/tofuchic/kancolle/raw/main/public/mikan/${displayName}.png`}
         />
       </div>
       {loaded && (
         <>
           <>
-            <div>
+            <div style={{ padding: '8px' }}>
               <h3>{mikan.userId}さんの評価</h3>
             </div>
-            <TateWrapper>
-              <Wrapper>
+            <Grid container>
+              <Grid xs={3}>
                 <Column>酸っぱい</Column>
-                <Box sx={{ width: 300 }}>
+              </Grid>
+              <Grid xs={6}>
+                <Box>
                   <Slider
                     aria-label="Taste"
                     defaultValue={mikan.taste}
@@ -173,56 +174,54 @@ export const MikanDetail = (props: any) => {
                     max={5}
                   />
                 </Box>
+              </Grid>
+              <Grid xs={3}>
                 <Column>甘い</Column>
-              </Wrapper>
-              <Wrapper>
+              </Grid>
+            </Grid>
+
+            <Grid container>
+              <Grid xs={3}>
                 <Column>しゃきしゃき</Column>
-                <Box sx={{ width: 300 }}>
-                  <Slider
-                    aria-label="Texture"
-                    defaultValue={mikan.texture}
-                    getAriaValueText={mikanTexture}
-                    onChange={mikanTextureChange}
-                    onChangeCommitted={patchMikan}
-                    step={1}
-                    marks
-                    min={-5}
-                    max={5}
-                  />
-                </Box>
+              </Grid>
+              <Grid xs={6}>
+                <Slider
+                  aria-label="Texture"
+                  defaultValue={mikan.texture}
+                  getAriaValueText={mikanTexture}
+                  onChange={mikanTextureChange}
+                  onChangeCommitted={patchMikan}
+                  step={1}
+                  marks
+                  min={-5}
+                  max={5}
+                />
+              </Grid>
+              <Grid xs={3}>
                 <Column>とろとろ</Column>
-              </Wrapper>
-            </TateWrapper>
+              </Grid>
+            </Grid>
+            <div style={{ padding: '8px', marginTop: '10px' }}>
+              <TextField
+                id={displayName}
+                label="メモ"
+                multiline
+                fullWidth
+                rows={4}
+                defaultValue={mikan.note}
+                placeholder="メモを入力してください"
+                onKeyUp={mikanNoteChange}
+                onChange={handleMikanNoteChange}
+              />
+            </div>
           </>
-          <TextField
-            id={displayName}
-            label="メモ"
-            multiline
-            rows={4}
-            defaultValue={mikan.note}
-            placeholder="メモを入力してください"
-            onKeyUp={mikanNoteChange}
-            onChange={handleMikanNoteChange}
-          />
         </>
       )}
     </div>
   )
 }
 
-const TateWrapper = styled.section`
-  align-items: center;
-`
-
-const Wrapper = styled.section`
-  display: flex;
-  align-items: center;
-`
-
 const Column = styled.span`
-  margin-left: 24px;
-  margin-right: 24px;
-  width: 100px;
   display: block;
   text-align: center;
 `
