@@ -1,6 +1,6 @@
-import styled from '@emotion/styled'
 import { MikanDetail } from './MikanDetail'
 import { useLocation } from 'react-router-dom'
+import { Container, Grid } from '@mui/material'
 import queryString from 'query-string'
 
 export const MikanDetails = (): React.ReactElement => {
@@ -16,16 +16,16 @@ export const MikanDetails = (): React.ReactElement => {
       return <div>表示するみかんがありません</div>
     } else if (typeof displayNames === 'string') {
       return (
-        <div>
+        <Grid xs={12} md={6}>
           <MikanDetail displayName={displayNames} />
-        </div>
+        </Grid>
       )
     } else {
       const list = displayNames.map((displayName) => {
         return (
-          <div key={displayName}>
+          <Grid xs={12} md={6} key={displayName}>
             <MikanDetail displayName={displayName} />
-          </div>
+          </Grid>
         )
       })
       return <>{list}</>
@@ -33,15 +33,10 @@ export const MikanDetails = (): React.ReactElement => {
   }
 
   return (
-    <div>
-      <Wrapper>
+    <Container>
+      <Grid container spacing={0.5}>
         <MikanDetailList></MikanDetailList>
-      </Wrapper>
-    </div>
+      </Grid>
+    </Container>
   )
 }
-
-const Wrapper = styled.section`
-  display: flex;
-  align-items: center;
-`
