@@ -224,7 +224,7 @@ export class MikanTotal extends Component<
     let myReview
     if (this.state.displayName != null) {
       myReview = (
-        <div>
+        <div key={this.state.displayName}>
           <MikanDetail displayName={this.state.displayName} canUpdate={false} />
         </div>
       )
