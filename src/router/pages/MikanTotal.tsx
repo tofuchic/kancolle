@@ -149,7 +149,9 @@ export class MikanTotal extends Component<
           theme: 'dark',
           custom: ({ seriesIndex, w }: any) => {
             const data = w.globals.initialSeries[seriesIndex]
-            this.setState({ displayName: data.name })
+            if (this.state.displayName !== data.name) {
+              this.setState({ displayName: data.name })
+            }
             return data.name
           }
         },
@@ -218,19 +220,18 @@ export class MikanTotal extends Component<
     }
   }
 
-  MikanIfExists = (): React.ReactElement => {
-    if (this.state.displayName == null) {
-      return <></>
-    } else {
-      return (
+  render(): JSX.Element {
+    let myReview
+    if (this.state.displayName != null) {
+      myReview = (
         <div>
-          <MikanDetail displayName={this.state.displayName} />
+          <MikanDetail displayName={this.state.displayName} canUpdate={false} />
         </div>
       )
+    } else {
+      myReview = <></>
     }
-  }
 
-  render(): JSX.Element {
     return (
       <>
         <TateWrapper>
@@ -251,9 +252,7 @@ export class MikanTotal extends Component<
           <YokoWrapper>
             <Column>しゃきしゃき</Column>
           </YokoWrapper>
-          <YokoWrapper>
-            <this.MikanIfExists></this.MikanIfExists>
-          </YokoWrapper>
+          <YokoWrapper>{myReview}</YokoWrapper>
         </TateWrapper>
       </>
     )

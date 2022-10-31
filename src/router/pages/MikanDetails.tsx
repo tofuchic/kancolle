@@ -17,14 +17,14 @@ export const MikanDetails = (): React.ReactElement => {
     } else if (typeof displayNames === 'string') {
       return (
         <Grid xs={12} md={6}>
-          <MikanDetail displayName={displayNames} />
+          <MikanDetail displayName={displayNames} canUpdate={true} />
         </Grid>
       )
     } else {
       const list = displayNames.map((displayName) => {
         return (
           <Grid xs={12} md={6} key={displayName}>
-            <MikanDetail displayName={displayName} />
+            <MikanDetail displayName={displayName as string} canUpdate={true} />
           </Grid>
         )
       })

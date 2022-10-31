@@ -13,8 +13,13 @@ interface Mikan {
   note?: string
 }
 
-export const MikanDetail = (props: any): React.ReactElement => {
-  const { displayName } = props
+interface Props {
+  displayName: string
+  canUpdate: boolean
+}
+
+export const MikanDetail = (props: Props): React.ReactElement => {
+  const { displayName, canUpdate } = props
   const [loaded, setLoaded] = useState<boolean>(false)
   const [mikan, setMikan] = useState<Mikan>({
     id: displayName
@@ -24,7 +29,7 @@ export const MikanDetail = (props: any): React.ReactElement => {
   useEffect(() => {
     console.debug('useEffect')
     void getMyMikanData()
-  })
+  }, [])
 
   const getMyMikanData = async (): Promise<void> => {
     console.debug('auth.currentUser?.uid:', auth.currentUser?.uid)
@@ -112,7 +117,9 @@ export const MikanDetail = (props: any): React.ReactElement => {
     _value: number | number[]
   ): void {
     // fire patch to db
-    void patchMyMikanData()
+    if (canUpdate) {
+      void patchMyMikanData()
+    }
   }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -137,8 +144,10 @@ export const MikanDetail = (props: any): React.ReactElement => {
 
   useEffect(() => {
     console.debug('useEffect with debounce')
-    void patchMyMikanData()
-  }, [debouncedInputText, patchMyMikanData])
+    if (canUpdate) {
+      void patchMyMikanData()
+    }
+  }, [debouncedInputText])
 
   return (
     <div>
@@ -146,23 +155,20 @@ export const MikanDetail = (props: any): React.ReactElement => {
       <div style={{ textAlign: 'center' }}>
         <img
           className="image-mikan"
-          src={`https://github.com/tofuchic/kancolle/raw/main/public/mikan/${
-            displayName as string
-          }.png`}
+          src={`https://github.com/tofuchic/kancolle/raw/main/public/mikan/${displayName}.png`}
         />
       </div>
+      <h3>{mikan.userId}さんの評価</h3>
       {loaded && (
         <>
-          <>
-            <div style={{ padding: '8px' }}>
-              <h3>{mikan.userId}さんの評価</h3>
-            </div>
-            <Grid container>
-              <Grid xs={3}>
-                <Column>酸っぱい</Column>
-              </Grid>
-              <Grid xs={6}>
-                <Box>
+          <div style={{ padding: '8px' }}></div>
+          <Grid container>
+            <Grid xs={3}>
+              <Column>酸っぱい</Column>
+            </Grid>
+            <Grid xs={6}>
+              <Box>
+                {canUpdate ? (
                   <Slider
                     aria-label="Taste"
                     defaultValue={mikan.taste}
@@ -174,18 +180,33 @@ export const MikanDetail = (props: any): React.ReactElement => {
                     min={-5}
                     max={5}
                   />
-                </Box>
-              </Grid>
-              <Grid xs={3}>
-                <Column>甘い</Column>
-              </Grid>
+                ) : (
+                  <Slider
+                    disabled={true}
+                    aria-label="Taste"
+                    defaultValue={mikan.taste}
+                    getAriaValueText={mikanTaste}
+                    onChange={mikanTasteChange}
+                    onChangeCommitted={patchMikan}
+                    step={1}
+                    marks
+                    min={-5}
+                    max={5}
+                  />
+                )}
+              </Box>
             </Grid>
+            <Grid xs={3}>
+              <Column>甘い</Column>
+            </Grid>
+          </Grid>
 
-            <Grid container>
-              <Grid xs={3}>
-                <Column>しゃきしゃき</Column>
-              </Grid>
-              <Grid xs={6}>
+          <Grid container>
+            <Grid xs={3}>
+              <Column>しゃきしゃき</Column>
+            </Grid>
+            <Grid xs={6}>
+              {canUpdate ? (
                 <Slider
                   aria-label="Texture"
                   defaultValue={mikan.texture}
@@ -197,12 +218,27 @@ export const MikanDetail = (props: any): React.ReactElement => {
                   min={-5}
                   max={5}
                 />
-              </Grid>
-              <Grid xs={3}>
-                <Column>とろとろ</Column>
-              </Grid>
+              ) : (
+                <Slider
+                  disabled={true}
+                  aria-label="Texture"
+                  defaultValue={mikan.texture}
+                  getAriaValueText={mikanTexture}
+                  onChange={mikanTextureChange}
+                  onChangeCommitted={patchMikan}
+                  step={1}
+                  marks
+                  min={-5}
+                  max={5}
+                />
+              )}
             </Grid>
-            <div style={{ padding: '8px', marginTop: '10px' }}>
+            <Grid xs={3}>
+              <Column>とろとろ</Column>
+            </Grid>
+          </Grid>
+          <div style={{ padding: '8px', marginTop: '10px' }}>
+            {canUpdate ? (
               <TextField
                 id={displayName}
                 label="メモ"
@@ -214,8 +250,21 @@ export const MikanDetail = (props: any): React.ReactElement => {
                 onKeyUp={mikanNoteChange}
                 onChange={handleMikanNoteChange}
               />
-            </div>
-          </>
+            ) : (
+              <TextField
+                disabled={true}
+                id={displayName}
+                label="メモ"
+                multiline
+                fullWidth
+                rows={4}
+                defaultValue={mikan.note}
+                placeholder="メモを入力してください"
+                onKeyUp={mikanNoteChange}
+                onChange={handleMikanNoteChange}
+              />
+            )}
+          </div>
         </>
       )}
     </div>
