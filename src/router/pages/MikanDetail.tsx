@@ -4,6 +4,7 @@ import { auth, db } from '@/services/auth/firebase'
 import { Grid, TextField, Slider, Box } from '@mui/material'
 import styled from '@emotion/styled'
 import { useDebounce } from '@/hooks/useDebounce'
+import useLocalStorage from '@/hooks/useLocalStorage'
 
 interface Mikan {
   id: string
@@ -21,25 +22,26 @@ interface Props {
 export const MikanDetail = (props: Props): React.ReactElement => {
   const { displayName, canUpdate } = props
   const [loaded, setLoaded] = useState<boolean>(false)
-  const [mikan, setMikan] = useState<Mikan>({
+  const [mikan, setMikan] = useLocalStorage<Mikan>(displayName, {
     id: displayName
   })
   const [mikanNote, setMikanNote] = useState<string | null>(null)
 
   useEffect(() => {
     console.debug('useEffect')
-    void getMyMikanData()
-  }, [])
+    if (mikan.userId == null) {
+      void getMyMikanData()
+    } else {
+      setLoaded(true)
+    }
+  }, [mikan])
 
   const getMyMikanData = async (): Promise<void> => {
-    console.debug('auth.currentUser?.uid:', auth.currentUser?.uid)
+    console.debug(MikanDetail.name + ': getDoc from firestore')
     const mikan = await getDoc(
       doc(db, 'mikan', displayName, 'userId', String(auth.currentUser?.uid))
     )
     const mikanData = mikan.data()
-    console.debug('↓myMikan↓')
-    console.debug(mikanData)
-    console.debug('↑myMikan↑')
 
     if (mikanData !== undefined) {
       setMikan({
@@ -107,23 +109,15 @@ export const MikanDetail = (props: Props): React.ReactElement => {
     })
   }
 
+  const debouncedInputMikan = useDebounce(mikan, 500)
   const debouncedInputText = useDebounce(mikanNote, 500)
   const handleMikanNoteChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => setMikanNote(event.target.value)
 
-  function patchMikan(
-    _event: React.SyntheticEvent | Event,
-    _value: number | number[]
-  ): void {
-    // fire patch to db
-    if (canUpdate) {
-      void patchMyMikanData()
-    }
-  }
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const patchMyMikanData = async (): Promise<void> => {
+    console.debug(MikanDetail.name + ': setDoc to firestore')
     console.debug('auth.currentUser?.uid:', auth.currentUser?.uid)
     const mikanRef = doc(
       db,
@@ -147,7 +141,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
     if (canUpdate) {
       void patchMyMikanData()
     }
-  }, [debouncedInputText])
+  }, [debouncedInputText, debouncedInputMikan])
 
   return (
     <div>
@@ -173,8 +167,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
                     aria-label="Taste"
                     defaultValue={mikan.taste}
                     getAriaValueText={mikanTaste}
-                    onChange={mikanTasteChange}
-                    onChangeCommitted={patchMikan}
+                    onChangeCommitted={mikanTasteChange}
                     step={1}
                     marks
                     min={-5}
@@ -186,8 +179,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
                     aria-label="Taste"
                     defaultValue={mikan.taste}
                     getAriaValueText={mikanTaste}
-                    onChange={mikanTasteChange}
-                    onChangeCommitted={patchMikan}
+                    onChangeCommitted={mikanTasteChange}
                     step={1}
                     marks
                     min={-5}
@@ -211,8 +203,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
                   aria-label="Texture"
                   defaultValue={mikan.texture}
                   getAriaValueText={mikanTexture}
-                  onChange={mikanTextureChange}
-                  onChangeCommitted={patchMikan}
+                  onChangeCommitted={mikanTextureChange}
                   step={1}
                   marks
                   min={-5}
@@ -224,8 +215,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
                   aria-label="Texture"
                   defaultValue={mikan.texture}
                   getAriaValueText={mikanTexture}
-                  onChange={mikanTextureChange}
-                  onChangeCommitted={patchMikan}
+                  onChangeCommitted={mikanTextureChange}
                   step={1}
                   marks
                   min={-5}
