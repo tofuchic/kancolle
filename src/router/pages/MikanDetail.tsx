@@ -157,10 +157,10 @@ export const MikanDetail = (props: Props): React.ReactElement => {
         <>
           <div style={{ padding: '8px' }}></div>
           <Grid container>
-            <Grid xs={3}>
+            <Grid item xs={3}>
               <Column>酸っぱい</Column>
             </Grid>
-            <Grid xs={6}>
+            <Grid item xs={6}>
               <Box>
                 {canUpdate ? (
                   <Slider
@@ -188,16 +188,16 @@ export const MikanDetail = (props: Props): React.ReactElement => {
                 )}
               </Box>
             </Grid>
-            <Grid xs={3}>
+            <Grid item xs={3}>
               <Column>甘い</Column>
             </Grid>
           </Grid>
 
           <Grid container>
-            <Grid xs={3}>
+            <Grid item xs={3}>
               <Column>しゃきしゃき</Column>
             </Grid>
-            <Grid xs={6}>
+            <Grid item xs={6}>
               {canUpdate ? (
                 <Slider
                   aria-label="Texture"
@@ -223,7 +223,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
                 />
               )}
             </Grid>
-            <Grid xs={3}>
+            <Grid item xs={3}>
               <Column>とろとろ</Column>
             </Grid>
           </Grid>
