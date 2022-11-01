@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { auth, db } from '@/services/auth/firebase'
-import { Grid, TextField, Slider, Box } from '@mui/material'
+import {
+  Grid,
+  TextField,
+  Slider,
+  Box,
+  Skeleton,
+  CircularProgress
+} from '@mui/material'
 import styled from '@emotion/styled'
 import { useDebounce } from '@/hooks/useDebounce'
 import useLocalStorage from '@/hooks/useLocalStorage'
@@ -152,9 +159,9 @@ export const MikanDetail = (props: Props): React.ReactElement => {
           src={`https://github.com/tofuchic/kancolle/raw/main/public/mikan/${displayName}.png`}
         />
       </div>
-      <h3>{mikan.userId}さんの評価</h3>
       {loaded && (
         <>
+          <h3>{mikan.userId}さんの評価</h3>
           <div style={{ padding: '8px' }}></div>
           <Grid container>
             <Grid item xs={3}>
@@ -254,6 +261,22 @@ export const MikanDetail = (props: Props): React.ReactElement => {
                 onChange={handleMikanNoteChange}
               />
             )}
+          </div>
+        </>
+      )}
+      {loaded || (
+        <>
+          <div style={{ margin: '16px 0px 16px 40px' }}>
+            <CircularProgress size="32px"/>
+          </div>
+          <div style={{ padding: '16px 64px 8px 64px' }}>
+            <Skeleton animation="wave" />
+          </div>
+          <div style={{ padding: '16px 64px 8px 64px' }}>
+            <Skeleton animation="wave" />
+          </div>
+          <div style={{ padding: '16px' }}>
+            <Skeleton animation="wave" variant="rectangular" height={140} />
           </div>
         </>
       )}
