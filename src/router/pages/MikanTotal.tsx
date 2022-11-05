@@ -1,9 +1,18 @@
 import { Component } from 'react'
 import '@/styles/App.css'
-import '@/services/auth/firebase'
 import Chart from 'react-apexcharts'
 import styled from '@emotion/styled'
 import { MikanDetail } from './MikanDetail'
+import {
+  addDoc,
+  collection,
+  collectionGroup,
+  getDocs,
+  query,
+  where
+} from 'firebase/firestore'
+import { db } from '@/services/auth/firebase'
+import { Button } from '@mui/material'
 
 interface DatabaseMikan {
   userId: string
@@ -85,12 +94,58 @@ const testData03: DatabaseAllMikan = {
   ]
 }
 
-const CALC_REVIEW_AVERAGE = (inputList: DatabaseMikan[]): [number, number] => {
+const calcReviewAverage = (inputList: DatabaseMikan[]): [number, number] => {
   const tastes = inputList.map((obj) => obj.data.taste)
   const averageTaste = tastes.reduce((a, b) => a + b, 0) / tastes.length
   const textures = inputList.map((obj) => obj.data.texture)
   const averageTexture = textures.reduce((a, b) => a + b, 0) / textures.length
   return [averageTaste, averageTexture]
+}
+
+const getAllMyMikanData = async (): Promise<void> => {
+  console.debug(MikanDetail.name + ': getDoc from firestore')
+
+  // テストデータ作成
+  const mikansRef = collection(db, 'mikans')
+  await Promise.all([
+    addDoc(collection(mikansRef, 'unshu', 'reviews'), {
+      target: 'unshu',
+      type: 'review',
+      taste: 0,
+      texture: 4
+    }),
+    addDoc(collection(mikansRef, 'unshu', 'reviews'), {
+      target: 'unshu',
+      type: 'review',
+      taste: 1,
+      texture: -1
+    }),
+    addDoc(collection(mikansRef, 'cut_fruit_orange', 'reviews'), {
+      target: 'cut_fruit_orange',
+      type: 'review',
+      taste: 3,
+      texture: 4
+    }),
+    addDoc(collection(mikansRef, 'cut_fruit_orange', 'reviews'), {
+      target: 'cut_fruit_orange',
+      type: 'review',
+      taste: -1,
+      texture: 2
+    })
+  ])
+
+  const mikans = query(
+    collectionGroup(db, 'reviews'),
+    where('type', '==', 'review')
+  )
+  try {
+    const querySnapshot = await getDocs(mikans)
+    querySnapshot.forEach((mikan) => {
+      console.log(mikan.id, ' : ', mikan.data())
+    })
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export class MikanTotal extends Component<
@@ -203,17 +258,17 @@ export class MikanTotal extends Component<
         {
           name: testData01.name,
           type: 'scatter',
-          data: [CALC_REVIEW_AVERAGE(testData01.data)]
+          data: [calcReviewAverage(testData01.data)]
         },
         {
           name: testData02.name,
           type: 'scatter',
-          data: [CALC_REVIEW_AVERAGE(testData02.data)]
+          data: [calcReviewAverage(testData02.data)]
         },
         {
           name: testData03.name,
           type: 'scatter',
-          data: [CALC_REVIEW_AVERAGE(testData03.data)]
+          data: [calcReviewAverage(testData03.data)]
         }
       ],
       displayName: null
@@ -254,6 +309,13 @@ export class MikanTotal extends Component<
           </YokoWrapper>
           <YokoWrapper>{myReview}</YokoWrapper>
         </TateWrapper>
+        <Button
+          onClick={() => {
+            void getAllMyMikanData()
+          }}
+        >
+          test
+        </Button>
       </>
     )
   }
