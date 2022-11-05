@@ -25,7 +25,7 @@ export const MikanTotal = (): React.ReactElement => {
     console.debug('getAllMikanStatistics')
     const mikanList: DatabaseMikan[] = []
     const mikans = query(
-      collectionGroup(db, 'mikan'),
+      collectionGroup(db, 'mikans'),
       where('type', '==', 'scatter')
     )
     try {
