@@ -39,98 +39,95 @@ export const MikanTotal = (): React.ReactElement => {
       console.error(error)
     }
     setMikansStatistics(mikanList)
-    setOptions({
-      chart: {
-        height: 480,
-        type: 'scatter',
-        animations: {
-          enabled: true
-        },
-        zoom: {
-          enabled: false
-        },
-        toolbar: {
-          show: false
-        }
-      },
-      fill: {
-        type: 'image',
-        opacity: 0.8,
-        image: {
-          src: getSrcImageList(),
-          width: 20,
-          height: 20
-        }
-      },
-      grid: {
-        xaxis: {
-          lines: {
-            show: true
-          }
-        },
-        yaxis: {
-          lines: {
-            show: true
-          }
-        }
-      },
-      legend: {
-        show: false
-      },
-      markers: {
-        size: 10
-      },
-      tooltip: {
-        theme: 'dark',
-        custom: ({ seriesIndex, w }: any) => {
-          const data = w.globals.initialSeries[seriesIndex]
-          if (displayName !== data.id) {
-            setDisplayName(data.id)
-          }
-          return data.name
-        }
-      },
-      xaxis: {
-        type: 'numeric',
-        tickAmount: 10,
-        min: -5,
-        max: 5,
-        axisTicks: {
-          show: true,
-          borderType: 'solid',
-          color: '#78909C',
-          height: 4,
-          offsetX: 0,
-          offsetY: 0
-        }
-      },
-      yaxis: {
-        tickAmount: 10,
-        min: -5.0,
-        max: 5.0,
-        axisTicks: {
-          show: true,
-          color: '#78909C',
-          width: 4,
-          offsetX: -0,
-          offsetY: 0
-        }
-      }
-    })
   }
 
   useEffect(() => {
     console.debug('useEffect')
     if (mikansStatistics.length === 0) {
-      console.debug(mikansStatistics)
-      console.debug('mikansStatistics')
+      console.debug('there is no mikansStatistics in localStorage')
       void getAllMikanStatistics()
     } else {
-      console.debug('no')
+      console.debug('there is mikansStatistics in localStorage')
+      setOptions({
+        chart: {
+          height: 480,
+          type: 'scatter',
+          animations: {
+            enabled: true
+          },
+          zoom: {
+            enabled: false
+          },
+          toolbar: {
+            show: false
+          }
+        },
+        fill: {
+          type: 'image',
+          opacity: 0.8,
+          image: {
+            src: getSrcImageList(),
+            width: 20,
+            height: 20
+          }
+        },
+        grid: {
+          xaxis: {
+            lines: {
+              show: true
+            }
+          },
+          yaxis: {
+            lines: {
+              show: true
+            }
+          }
+        },
+        legend: {
+          show: false
+        },
+        markers: {
+          size: 10
+        },
+        tooltip: {
+          theme: 'dark',
+          custom: ({ seriesIndex, w }: any) => {
+            const data = w.globals.initialSeries[seriesIndex]
+            if (displayName !== data.id) {
+              setDisplayName(data.id)
+            }
+            return data.name
+          }
+        },
+        xaxis: {
+          type: 'numeric',
+          tickAmount: 10,
+          min: -5,
+          max: 5,
+          axisTicks: {
+            show: true,
+            borderType: 'solid',
+            color: '#78909C',
+            height: 4,
+            offsetX: 0,
+            offsetY: 0
+          }
+        },
+        yaxis: {
+          tickAmount: 10,
+          min: -5.0,
+          max: 5.0,
+          axisTicks: {
+            show: true,
+            color: '#78909C',
+            width: 4,
+            offsetX: -0,
+            offsetY: 0
+          }
+        }
+      })
     }
-    console.debug(getSrcImageList())
-    console.debug(options)
-  }, [])
+  }, [mikansStatistics])
 
   const [displayName, setDisplayName] = useState<string>('')
 
