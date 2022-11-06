@@ -1,324 +1,266 @@
-import { Component } from 'react'
+import { useEffect, useState } from 'react'
 import '@/styles/App.css'
 import Chart from 'react-apexcharts'
 import styled from '@emotion/styled'
 import { MikanDetail } from './MikanDetail'
-import {
-  addDoc,
-  collection,
-  collectionGroup,
-  getDocs,
-  query,
-  where
-} from 'firebase/firestore'
+import { collectionGroup, getDocs, query, where } from 'firebase/firestore'
 import { db } from '@/services/auth/firebase'
-import { Button } from '@mui/material'
+import { IconButton } from '@mui/material'
+import RefreshIcon from '@mui/icons-material/Refresh'
+import useLocalStorage from '@/hooks/useLocalStorage'
 
 interface DatabaseMikan {
-  userId: string
-  data: {
-    taste: number
-    texture: number
-  }
-}
-
-interface DatabaseAllMikan {
+  id: string
   name: string
-  data: DatabaseMikan[]
+  type: string
+  data: [number, number]
 }
 
-const testData01: DatabaseAllMikan = {
-  name: 'cut_fruit_orange',
-  data: [
-    {
-      userId: 'person1',
-      data: {
-        taste: 5,
-        texture: 5
-      }
+export const MikanTotal = (): React.ReactElement => {
+  const [mikansStatistics, setMikansStatistics] = useLocalStorage<
+    DatabaseMikan[]
+  >('mikansStatistics', [])
+
+  const getAllMikanStatistics = async (): Promise<void> => {
+    console.debug('getAllMikanStatistics')
+    const mikanList: DatabaseMikan[] = []
+    const mikans = query(
+      collectionGroup(db, 'mikan'),
+      where('type', '==', 'scatter')
+    )
+    try {
+      const querySnapshot = await getDocs(mikans)
+      console.debug(querySnapshot)
+      querySnapshot.forEach((mikan) => {
+        console.debug(mikan.id, ' : ', mikan.data())
+        mikanList.push(mikan.data() as DatabaseMikan)
+      })
+    } catch (error) {
+      console.error(error)
     }
-  ]
-}
-
-const testData02: DatabaseAllMikan = {
-  name: 'fruit_ao_mikan',
-  data: [
-    {
-      userId: 'person1',
-      data: {
-        taste: -5,
-        texture: -5
-      }
-    }
-  ]
-}
-
-const testData03: DatabaseAllMikan = {
-  name: 'fruit_cut_orange',
-  data: [
-    {
-      userId: 'person1',
-      data: {
-        taste: 2,
-        texture: 1
-      }
-    },
-    {
-      userId: 'person2',
-      data: {
-        taste: 1,
-        texture: 1
-      }
-    },
-    {
-      userId: 'person3',
-      data: {
-        taste: 3,
-        texture: 3
-      }
-    },
-    {
-      userId: 'person4',
-      data: {
-        taste: 4,
-        texture: -1
-      }
-    },
-    {
-      userId: 'person5',
-      data: {
-        taste: -3,
-        texture: 2
-      }
-    }
-  ]
-}
-
-const calcReviewAverage = (inputList: DatabaseMikan[]): [number, number] => {
-  const tastes = inputList.map((obj) => obj.data.taste)
-  const averageTaste = tastes.reduce((a, b) => a + b, 0) / tastes.length
-  const textures = inputList.map((obj) => obj.data.texture)
-  const averageTexture = textures.reduce((a, b) => a + b, 0) / textures.length
-  return [averageTaste, averageTexture]
-}
-
-const getAllMyMikanData = async (): Promise<void> => {
-  console.debug(MikanDetail.name + ': getDoc from firestore')
-
-  // テストデータ作成
-  const mikansRef = collection(db, 'mikans')
-  await Promise.all([
-    addDoc(collection(mikansRef, 'unshu', 'reviews'), {
-      target: 'unshu',
-      type: 'review',
-      taste: 0,
-      texture: 4
-    }),
-    addDoc(collection(mikansRef, 'unshu', 'reviews'), {
-      target: 'unshu',
-      type: 'review',
-      taste: 1,
-      texture: -1
-    }),
-    addDoc(collection(mikansRef, 'cut_fruit_orange', 'reviews'), {
-      target: 'cut_fruit_orange',
-      type: 'review',
-      taste: 3,
-      texture: 4
-    }),
-    addDoc(collection(mikansRef, 'cut_fruit_orange', 'reviews'), {
-      target: 'cut_fruit_orange',
-      type: 'review',
-      taste: -1,
-      texture: 2
-    })
-  ])
-
-  const mikans = query(
-    collectionGroup(db, 'reviews'),
-    where('type', '==', 'review')
-  )
-  try {
-    const querySnapshot = await getDocs(mikans)
-    querySnapshot.forEach((mikan) => {
-      console.log(mikan.id, ' : ', mikan.data())
-    })
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-export class MikanTotal extends Component<
-  {},
-  { options: any; series: any; displayName: string | null }
-> {
-  constructor(props: any) {
-    super(props)
-    this.state = {
-      options: {
-        chart: {
-          height: 480,
-          type: 'scatter',
-          animations: {
-            enabled: true
-          },
-          zoom: {
-            enabled: false
-          },
-          toolbar: {
-            show: false
-          }
+    setMikansStatistics(mikanList)
+    setOptions({
+      chart: {
+        height: 480,
+        type: 'scatter',
+        animations: {
+          enabled: true
         },
-        fill: {
-          type: 'image',
-          opacity: 0.8,
-          image: {
-            src: [
-              'https://github.com/tofuchic/kancolle/raw/main/public/mikan/cut_fruit_orange.png',
-              'https://github.com/tofuchic/kancolle/raw/main/public/mikan/fruit_ao_mikan.png',
-              'https://github.com/tofuchic/kancolle/raw/main/public/mikan/fruit_cut_orange.png'
-            ],
-            width: 20,
-            height: 20
-          }
+        zoom: {
+          enabled: false
         },
-        grid: {
-          xaxis: {
-            lines: {
-              show: true
-            }
-          },
-          yaxis: {
-            lines: {
-              show: true
-            }
-          }
-        },
-        legend: {
+        toolbar: {
           show: false
-        },
-        markers: {
-          size: 10
-        },
-        tooltip: {
-          theme: 'dark',
-          custom: ({ seriesIndex, w }: any) => {
-            const data = w.globals.initialSeries[seriesIndex]
-            if (this.state.displayName !== data.name) {
-              this.setState({ displayName: data.name })
-            }
-            return data.name
-          }
-        },
+        }
+      },
+      fill: {
+        type: 'image',
+        opacity: 0.8,
+        image: {
+          src: getSrcImageList(),
+          width: 20,
+          height: 20
+        }
+      },
+      grid: {
         xaxis: {
-          type: 'numeric',
-          tickAmount: 10,
-          min: -5,
-          max: 5,
-          axisBorder: {
-            show: true,
-            color: '#78909C',
-            height: 1,
-            width: '100%',
-            offsetX: 0,
-            offsetY: 0
-          },
-          axisTicks: {
-            show: true,
-            borderType: 'solid',
-            color: '#78909C',
-            height: 4,
-            offsetX: 0,
-            offsetY: 0
+          lines: {
+            show: true
           }
         },
         yaxis: {
-          tickAmount: 10,
-          min: -5.0,
-          max: 5.0,
-          axisBorder: {
-            show: true,
-            color: '#78909C',
-            height: '100%',
-            width: 1,
-            offsetX: 0,
-            offsetY: 0
-          },
-          axisTicks: {
-            show: true,
-            borderType: 'solid',
-            color: '#78909C',
-            width: 4,
-            offsetX: -0,
-            offsetY: 0
+          lines: {
+            show: true
           }
         }
       },
-      series: [
-        {
-          name: testData01.name,
-          type: 'scatter',
-          data: [calcReviewAverage(testData01.data)]
-        },
-        {
-          name: testData02.name,
-          type: 'scatter',
-          data: [calcReviewAverage(testData02.data)]
-        },
-        {
-          name: testData03.name,
-          type: 'scatter',
-          data: [calcReviewAverage(testData03.data)]
+      legend: {
+        show: false
+      },
+      markers: {
+        size: 10
+      },
+      tooltip: {
+        theme: 'dark',
+        custom: ({ seriesIndex, w }: any) => {
+          const data = w.globals.initialSeries[seriesIndex]
+          if (displayName !== data.id) {
+            setDisplayName(data.id)
+          }
+          return data.name
         }
-      ],
-      displayName: null
-    }
+      },
+      xaxis: {
+        type: 'numeric',
+        tickAmount: 10,
+        min: -5,
+        max: 5,
+        axisTicks: {
+          show: true,
+          borderType: 'solid',
+          color: '#78909C',
+          height: 4,
+          offsetX: 0,
+          offsetY: 0
+        }
+      },
+      yaxis: {
+        tickAmount: 10,
+        min: -5.0,
+        max: 5.0,
+        axisTicks: {
+          show: true,
+          color: '#78909C',
+          width: 4,
+          offsetX: -0,
+          offsetY: 0
+        }
+      }
+    })
   }
 
-  render(): JSX.Element {
-    let myReview
-    if (this.state.displayName != null) {
-      myReview = (
-        <div key={this.state.displayName}>
-          <MikanDetail displayName={this.state.displayName} canUpdate={false} />
-        </div>
-      )
+  useEffect(() => {
+    console.debug('useEffect')
+    if (mikansStatistics.length === 0) {
+      console.debug(mikansStatistics)
+      console.debug('mikansStatistics')
+      void getAllMikanStatistics()
     } else {
-      myReview = <></>
+      console.debug('no')
     }
+    console.debug(getSrcImageList())
+    console.debug(options)
+  }, [])
 
-    return (
-      <>
-        <TateWrapper>
-          <YokoWrapper>
-            <Column>とろとろ</Column>
-          </YokoWrapper>
-          <YokoWrapper>
-            <Column>酸っぱい</Column>
-            <Chart
-              options={this.state.options}
-              series={this.state.series}
-              type="scatter"
-              width={480}
-              height={480}
-            />
-            <Column>甘い</Column>
-          </YokoWrapper>
-          <YokoWrapper>
-            <Column>しゃきしゃき</Column>
-          </YokoWrapper>
-          <YokoWrapper>{myReview}</YokoWrapper>
-        </TateWrapper>
-        <Button
-          onClick={() => {
-            void getAllMyMikanData()
-          }}
-        >
-          test
-        </Button>
-      </>
-    )
+  const [displayName, setDisplayName] = useState<string>('')
+
+  const getSrcImageList = (): string[] => {
+    const srcImageList: string[] = []
+    mikansStatistics.forEach((mikanStatistics: DatabaseMikan) => {
+      srcImageList.push(
+        `https://github.com/tofuchic/kancolle/raw/main/public/mikan/${mikanStatistics.id}.png`
+      )
+    })
+    return srcImageList
   }
+
+  const [options, setOptions] = useState<ApexCharts.ApexOptions>({
+    chart: {
+      height: 480,
+      type: 'scatter',
+      animations: {
+        enabled: true
+      },
+      zoom: {
+        enabled: false
+      },
+      toolbar: {
+        show: false
+      }
+    },
+    fill: {
+      type: 'image',
+      opacity: 0.8,
+      image: {
+        src: getSrcImageList(),
+        width: 20,
+        height: 20
+      }
+    },
+    grid: {
+      xaxis: {
+        lines: {
+          show: true
+        }
+      },
+      yaxis: {
+        lines: {
+          show: true
+        }
+      }
+    },
+    legend: {
+      show: false
+    },
+    markers: {
+      size: 10
+    },
+    tooltip: {
+      theme: 'dark',
+      custom: ({ seriesIndex, w }: any) => {
+        const data = w.globals.initialSeries[seriesIndex]
+        if (displayName !== data.id) {
+          setDisplayName(data.id)
+        }
+        return data.name
+      }
+    },
+    xaxis: {
+      type: 'numeric',
+      tickAmount: 10,
+      min: -5,
+      max: 5,
+      axisTicks: {
+        show: true,
+        borderType: 'solid',
+        color: '#78909C',
+        height: 4,
+        offsetX: 0,
+        offsetY: 0
+      }
+    },
+    yaxis: {
+      tickAmount: 10,
+      min: -5.0,
+      max: 5.0,
+      axisTicks: {
+        show: true,
+        color: '#78909C',
+        width: 4,
+        offsetX: -0,
+        offsetY: 0
+      }
+    }
+  })
+
+  return (
+    <>
+      <TateWrapper>
+        <IconButton aria-label="refresh" size="large">
+          <RefreshIcon
+            onClick={() => {
+              void getAllMikanStatistics()
+            }}
+          />
+        </IconButton>
+        <YokoWrapper>
+          <Column>とろとろ</Column>
+        </YokoWrapper>
+        <YokoWrapper>
+          <Column>酸っぱい</Column>
+          <Chart
+            options={options}
+            series={mikansStatistics}
+            type="scatter"
+            width={480}
+            height={480}
+          />
+          <Column>甘い</Column>
+        </YokoWrapper>
+        <YokoWrapper>
+          <Column>しゃきしゃき</Column>
+        </YokoWrapper>
+
+        <YokoWrapper>
+          {displayName.length > 0 && (
+            <div key={displayName}>
+              <MikanDetail displayName={displayName} canUpdate={false} />
+            </div>
+          )}
+        </YokoWrapper>
+      </TateWrapper>
+    </>
+  )
 }
 
 const TateWrapper = styled.section`
