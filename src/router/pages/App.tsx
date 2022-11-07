@@ -32,11 +32,12 @@ export const App: React.FunctionComponent = () => {
               n月のみかん（サンプル）
             </Link>
           </li>
-          <li>
+          {/* DBにデータを入れてから */}
+          {/* <li>
             <Link to="/mikan?displayName=taguchiwase,kimurawase,orogurosu,yamashitabeniwase,kanjukuyurawase,amakusa,benimadonna">
               11月のみかん
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/total">みんなの評価（イメージ図）</Link>
           </li>
