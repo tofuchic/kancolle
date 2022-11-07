@@ -4,7 +4,7 @@ import Chart from 'react-apexcharts'
 import styled from '@emotion/styled'
 import { MikanDetail } from './MikanDetail'
 import { collectionGroup, getDocs, query, where } from 'firebase/firestore'
-import { db } from '@/services/auth/firebase'
+import { auth, db } from '@/services/auth/firebase'
 import { IconButton } from '@mui/material'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import useLocalStorage from '@/hooks/useLocalStorage'
@@ -38,7 +38,6 @@ export const MikanTotal = (): React.ReactElement => {
     } catch (error) {
       console.error(error)
     }
-    setMikansStatistics(mikanList)
   }
 
   useEffect(() => {

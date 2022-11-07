@@ -13,11 +13,21 @@ import styled from '@emotion/styled'
 import { useDebounce } from '@/hooks/useDebounce'
 import useLocalStorage from '@/hooks/useLocalStorage'
 
-interface Mikan {
+interface MikanProfile {
   id: string
-  userId?: string
+  type: string
+  name?: string
+  imageUrl?: string
+}
+
+interface PublicMikanReview {
+  type: string
   taste?: number
   texture?: number
+}
+
+interface PrivateMikanReview {
+  type: string
   note?: string
 }
 
@@ -29,45 +39,115 @@ interface Props {
 export const MikanDetail = (props: Props): React.ReactElement => {
   const { displayName, canUpdate } = props
   const [loaded, setLoaded] = useState<boolean>(false)
-  const [mikan, setMikan] = useLocalStorage<Mikan>(displayName, {
-    id: displayName
-  })
-  const [mikanNote, setMikanNote] = useState<string | null>(null)
+
+  const [mikanProfile, setMikanProfile] = useLocalStorage<MikanProfile>(
+    displayName + '_profile',
+    {
+      id: displayName,
+      type: 'profile'
+    }
+  )
+
+  const [publicMikanReview, setPublicMikanReview] =
+    useLocalStorage<PublicMikanReview>(displayName + '_public', {
+      type: 'public_review'
+    })
+
+  const [privateMikanReview, setPrivateMikanReview] =
+    useLocalStorage<PrivateMikanReview>(displayName + '_private', {
+      type: 'private_review'
+    })
 
   useEffect(() => {
     console.debug('useEffect')
-    if (mikan.userId == null) {
-      void getMyMikanData()
+    if (mikanProfile.name == null) {
+      void getMikanProfile()
+    } else if (
+      publicMikanReview.taste == null ||
+      publicMikanReview.texture == null
+    ) {
+      void getMyMikanPublicReview()
+    } else if (privateMikanReview.note == null) {
+      void getMyMikanPrivateReview()
     } else {
       setLoaded(true)
     }
-  }, [mikan])
+  }, [mikanProfile, publicMikanReview, privateMikanReview])
 
-  const getMyMikanData = async (): Promise<void> => {
-    console.debug(MikanDetail.name + ': getDoc from firestore')
-    const mikan = await getDoc(
-      doc(db, 'mikan', displayName, 'userId', String(auth.currentUser?.uid))
-    )
-    const mikanData = mikan.data()
+  const getMikanProfile = async (): Promise<void> => {
+    console.debug(MikanDetail.name + ': getMikanProfile from firestore')
 
-    if (mikanData !== undefined) {
-      setMikan({
-        id: displayName,
-        userId: String(auth.currentUser?.displayName),
-        taste: mikanData.taste,
-        texture: mikanData.texture,
-        note: mikanData.note
-      })
-    } else {
-      setMikan({
-        id: displayName,
-        userId: String(auth.currentUser?.displayName),
-        taste: 0,
-        texture: 0,
-        note: ''
-      })
+    if (auth.currentUser != null) {
+      const mikanRef = await getDoc(doc(db, 'mikans', displayName))
+      const mikanProfile = mikanRef.data()
+
+      if (mikanProfile !== undefined) {
+        setMikanProfile({
+          id: displayName,
+          type: 'profile',
+          name: mikanProfile.name,
+          imageUrl: mikanProfile.imageUrl
+        })
+      }
     }
-    setLoaded(true)
+  }
+
+  const getMyMikanPublicReview = async (): Promise<void> => {
+    console.debug(MikanDetail.name + ': getMyMikanPublicReview from firestore')
+    if (auth.currentUser != null) {
+      const mikan = await getDoc(
+        doc(
+          db,
+          'mikans',
+          displayName,
+          'public_reviews',
+          String(auth.currentUser?.uid)
+        )
+      )
+      const mikanData = mikan.data()
+
+      if (mikanData !== undefined) {
+        setPublicMikanReview({
+          type: 'public_review',
+          taste: mikanData.taste,
+          texture: mikanData.texture
+        })
+      } else {
+        setPublicMikanReview({
+          type: 'public_review',
+          taste: 0,
+          texture: 0
+        })
+      }
+    }
+  }
+
+  const getMyMikanPrivateReview = async (): Promise<void> => {
+    console.debug(MikanDetail.name + ': getMyMikanPrivateReview from firestore')
+    if (auth.currentUser != null) {
+      const mikan = await getDoc(
+        doc(
+          db,
+          'mikans',
+          displayName,
+          'private_reviews',
+          String(auth.currentUser?.uid)
+        )
+      )
+      const mikanData = mikan.data()
+
+      if (mikanData !== undefined) {
+        setPrivateMikanReview({
+          type: 'private_review',
+          note: mikanData.note
+        })
+      } else {
+        setPrivateMikanReview({
+          type: 'private_review',
+          note: ''
+        })
+      }
+    }
   }
 
   function mikanTaste(value: number): string {
@@ -78,12 +158,10 @@ export const MikanDetail = (props: Props): React.ReactElement => {
     _event: React.SyntheticEvent | Event,
     value: number | number[]
   ): void {
-    setMikan({
-      id: mikan.id,
-      userId: mikan.userId,
+    setPublicMikanReview({
+      type: publicMikanReview.type,
       taste: Number(value),
-      texture: mikan.texture,
-      note: mikan.note
+      texture: publicMikanReview.texture
     })
   }
 
@@ -95,73 +173,95 @@ export const MikanDetail = (props: Props): React.ReactElement => {
     _event: React.SyntheticEvent | Event,
     value: number | number[]
   ): void {
-    setMikan({
-      id: mikan.id,
-      userId: mikan.userId,
-      taste: mikan.taste,
-      texture: Number(value),
-      note: mikan.note
+    setPublicMikanReview({
+      type: publicMikanReview.type,
+      taste: publicMikanReview.taste,
+      texture: Number(value)
     })
   }
 
-  function mikanNoteChange(): void {
+  const mikanNoteChanged = (): void => {
     const innerText = (document.getElementById(displayName) as HTMLInputElement)
       .value
-    setMikan({
-      id: mikan.id,
-      userId: mikan.userId,
-      taste: mikan.taste,
-      texture: mikan.texture,
+    setPrivateMikanReview({
+      type: privateMikanReview.type,
       note: innerText
     })
   }
 
-  const debouncedInputMikan = useDebounce(mikan, 500)
-  const debouncedInputText = useDebounce(mikanNote, 500)
-  const handleMikanNoteChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => setMikanNote(event.target.value)
+  const debouncedPublicMikanReview = useDebounce(publicMikanReview, 500)
+  const debouncedPrivateMikanReview = useDebounce(privateMikanReview, 500)
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const patchMyMikanData = async (): Promise<void> => {
-    console.debug(MikanDetail.name + ': setDoc to firestore')
-    console.debug('auth.currentUser?.uid:', auth.currentUser?.uid)
-    const mikanRef = doc(
-      db,
-      'mikan',
-      displayName,
-      'userId',
-      String(auth.currentUser?.uid)
-    )
+  const patchMyMikanPublicReview = async (): Promise<void> => {
+    console.debug(MikanDetail.name + ': patchMyMikanPublicReview to firestore')
+    if (auth.currentUser != null) {
+      const mikanRef = doc(
+        db,
+        'mikans',
+        displayName,
+        'public_reviews',
+        String(auth.currentUser?.uid)
+      )
 
-    const updateMikan = {
-      taste: mikan.taste,
-      texture: mikan.texture,
-      note: mikan.note
+      const updateMikan: PublicMikanReview = {
+        type: publicMikanReview.type,
+        taste: publicMikanReview.taste,
+        texture: publicMikanReview.texture
+      }
+
+      await setDoc(mikanRef, updateMikan)
     }
+  }
 
-    await setDoc(mikanRef, updateMikan)
+  const patchMyMikanPrivateReview = async (): Promise<void> => {
+    console.debug(MikanDetail.name + ': patchMyMikanPrivateReview to firestore')
+    if (auth.currentUser != null) {
+      const mikanRef = doc(
+        db,
+        'mikans',
+        displayName,
+        'private_reviews',
+        String(auth.currentUser?.uid)
+      )
+
+      const updateMikan: PrivateMikanReview = {
+        type: privateMikanReview.type,
+        note: privateMikanReview.note
+      }
+
+      await setDoc(mikanRef, updateMikan)
+    }
   }
 
   useEffect(() => {
-    console.debug('useEffect with debounce')
     if (canUpdate) {
-      void patchMyMikanData()
+      void patchMyMikanPublicReview()
     }
-  }, [debouncedInputText, debouncedInputMikan])
+  }, [debouncedPublicMikanReview])
+
+  useEffect(() => {
+    if (canUpdate) {
+      void patchMyMikanPrivateReview()
+    }
+  }, [debouncedPrivateMikanReview])
 
   return (
     <div>
-      <h1>{mikan.id}</h1>
+      <h1>{mikanProfile.name}</h1>
       <div style={{ textAlign: 'center' }}>
-        <img
-          className="image-mikan"
-          src={`https://github.com/tofuchic/kancolle/raw/main/public/mikan/${displayName}.png`}
-        />
+        {mikanProfile.imageUrl == null && (
+          <img
+            className="image-mikan"
+            src={`https://github.com/tofuchic/kancolle/raw/main/public/mikan/${displayName}.png`}
+          />
+        )}
+        {mikanProfile.imageUrl != null && (
+          <img className="image-mikan" src={mikanProfile.imageUrl} />
+        )}
       </div>
       {loaded && (
         <>
-          <h3>{mikan.userId}さんの評価</h3>
+          <h3>{auth.currentUser?.displayName}さんの評価</h3>
           <div style={{ padding: '8px' }}></div>
           <Grid container>
             <Grid item xs={3}>
@@ -172,7 +272,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
                 {canUpdate ? (
                   <Slider
                     aria-label="Taste"
-                    defaultValue={mikan.taste}
+                    defaultValue={publicMikanReview.taste}
                     getAriaValueText={mikanTaste}
                     onChangeCommitted={mikanTasteChange}
                     step={1}
@@ -184,7 +284,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
                   <Slider
                     disabled={true}
                     aria-label="Taste"
-                    defaultValue={mikan.taste}
+                    defaultValue={publicMikanReview.taste}
                     getAriaValueText={mikanTaste}
                     onChangeCommitted={mikanTasteChange}
                     step={1}
@@ -208,7 +308,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
               {canUpdate ? (
                 <Slider
                   aria-label="Texture"
-                  defaultValue={mikan.texture}
+                  defaultValue={publicMikanReview.texture}
                   getAriaValueText={mikanTexture}
                   onChangeCommitted={mikanTextureChange}
                   step={1}
@@ -220,7 +320,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
                 <Slider
                   disabled={true}
                   aria-label="Texture"
-                  defaultValue={mikan.texture}
+                  defaultValue={publicMikanReview.texture}
                   getAriaValueText={mikanTexture}
                   onChangeCommitted={mikanTextureChange}
                   step={1}
@@ -242,10 +342,9 @@ export const MikanDetail = (props: Props): React.ReactElement => {
                 multiline
                 fullWidth
                 rows={4}
-                defaultValue={mikan.note}
+                defaultValue={privateMikanReview.note}
                 placeholder="メモを入力してください"
-                onKeyUp={mikanNoteChange}
-                onChange={handleMikanNoteChange}
+                onChange={mikanNoteChanged}
               />
             ) : (
               <TextField
@@ -255,10 +354,9 @@ export const MikanDetail = (props: Props): React.ReactElement => {
                 multiline
                 fullWidth
                 rows={4}
-                defaultValue={mikan.note}
+                defaultValue={privateMikanReview.note}
                 placeholder="メモを入力してください"
-                onKeyUp={mikanNoteChange}
-                onChange={handleMikanNoteChange}
+                onChange={mikanNoteChanged}
               />
             )}
           </div>
@@ -267,7 +365,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
       {loaded || (
         <>
           <div style={{ margin: '16px 0px 16px 40px' }}>
-            <CircularProgress size="32px"/>
+            <CircularProgress size="32px" />
           </div>
           <div style={{ padding: '16px 64px 8px 64px' }}>
             <Skeleton animation="wave" />
