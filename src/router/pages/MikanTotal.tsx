@@ -38,6 +38,7 @@ export const MikanTotal = (): React.ReactElement => {
     } catch (error) {
       console.error(error)
     }
+    setMikansStatistics(mikanList)
   }
 
   useEffect(() => {
