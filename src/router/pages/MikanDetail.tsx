@@ -362,7 +362,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
           </div>
         </>
       )}
-      {loaded || (
+      {auth.currentUser == null || loaded || (
         <>
           <div style={{ margin: '16px 0px 16px 40px' }}>
             <CircularProgress size="32px" />

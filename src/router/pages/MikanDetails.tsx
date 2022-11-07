@@ -1,5 +1,5 @@
 import { MikanDetail } from './MikanDetail'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Container, Grid } from '@mui/material'
 import queryString from 'query-string'
 import { auth } from '@/services/auth/firebase'
@@ -41,6 +41,11 @@ export const MikanDetails = (): React.ReactElement => {
 
   return (
     <Container>
+      {auth.currentUser == null && (
+        <li>
+          <Link to="/login">ログインしてみかんをレビューしよう</Link>
+        </li>
+      )}
       <Grid container spacing={0.5}>
         <MikanDetailList></MikanDetailList>
       </Grid>
