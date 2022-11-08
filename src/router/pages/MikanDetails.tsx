@@ -1,7 +1,8 @@
 import { MikanDetail } from './MikanDetail'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Container, Grid } from '@mui/material'
 import queryString from 'query-string'
+import { auth } from '@/services/auth/firebase'
 
 export const MikanDetails = (): React.ReactElement => {
   const query = useLocation().search
@@ -17,14 +18,20 @@ export const MikanDetails = (): React.ReactElement => {
     } else if (typeof displayNames === 'string') {
       return (
         <Grid item xs={12} md={6}>
-          <MikanDetail displayName={displayNames} canUpdate={true} />
+          <MikanDetail
+            displayName={displayNames}
+            canUpdate={auth.currentUser != null}
+          />
         </Grid>
       )
     } else {
       const list = displayNames.map((displayName, index) => {
         return (
           <Grid item xs={12} md={6} key={index}>
-            <MikanDetail displayName={displayName as string} canUpdate={true} />
+            <MikanDetail
+              displayName={displayName as string}
+              canUpdate={auth.currentUser != null}
+            />
           </Grid>
         )
       })
@@ -34,6 +41,11 @@ export const MikanDetails = (): React.ReactElement => {
 
   return (
     <Container>
+      {auth.currentUser == null && (
+        <li>
+          <Link to="/login">ログインしてみかんをレビューしよう</Link>
+        </li>
+      )}
       <Grid container spacing={0.5}>
         <MikanDetailList></MikanDetailList>
       </Grid>

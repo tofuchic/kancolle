@@ -29,11 +29,17 @@ export const App: React.FunctionComponent = () => {
           </li>
           <li>
             <Link to="/mikan?displayName=cut_fruit_orange,fruit_ao_mikan">
-              11月のみかん
+              n月のみかん（サンプル）
             </Link>
           </li>
+          {/* DBにデータを入れてから */}
+          {/* <li>
+            <Link to="/mikan?displayName=taguchiwase,kimurawase,orogurosu,yamashitabeniwase,kanjukuyurawase,amakusa,benimadonna">
+              11月のみかん
+            </Link>
+          </li> */}
           <li>
-            <Link to="/total">みんなの評価</Link>
+            <Link to="/total">みんなの評価（イメージ図）</Link>
           </li>
         </ul>
       </nav>
