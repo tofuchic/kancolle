@@ -5,7 +5,7 @@ import {
   TwitterAuthProvider,
   onAuthStateChanged,
   signInWithRedirect,
-  User
+  User,
 } from 'firebase/auth'
 
 interface AuthContextType {
@@ -15,7 +15,7 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType>({
-  currentUser: null
+  currentUser: null,
 })
 
 export const useAuth = (): AuthContextType => {
@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }: Props): React.ReactElement => {
   const value: AuthContextType = {
     currentUser,
     login,
-    logout
+    logout,
   }
 
   return (

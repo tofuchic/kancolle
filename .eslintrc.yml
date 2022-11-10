@@ -1,0 +1,30 @@
+env:
+  browser: true
+  es2021: true
+parser: '@typescript-eslint/parser'
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/eslint-recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:react/recommended
+  - prettier
+parserOptions:
+  ecmaVersion: 'latest'
+  sourceType: 'module'
+  project: './tsconfig.json'
+plugins:
+  - 'react'
+  - 'react-hooks'
+  - '@typescript-eslint'
+rules:
+  react/react-in-jsx-scope: 'off'
+  react-hooks/rules-of-hooks: 'error'
+  react-hooks/exhaustive-deps: 'warn'
+ignorePatterns:
+  - '.eslintrc.*'
+  - 'vite.config.*'
+settings:
+  react:
+    version: detect
+  import/resolver:
+    typescript: []

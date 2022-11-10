@@ -7,7 +7,7 @@ import {
   Slider,
   Box,
   Skeleton,
-  CircularProgress
+  CircularProgress,
 } from '@mui/material'
 import styled from '@emotion/styled'
 import { useDebounce } from '@/hooks/useDebounce'
@@ -44,18 +44,18 @@ export const MikanDetail = (props: Props): React.ReactElement => {
     displayName + '_profile',
     {
       id: displayName,
-      type: 'profile'
+      type: 'profile',
     }
   )
 
   const [publicMikanReview, setPublicMikanReview] =
     useLocalStorage<PublicMikanReview>(displayName + '_public', {
-      type: 'public_review'
+      type: 'public_review',
     })
 
   const [privateMikanReview, setPrivateMikanReview] =
     useLocalStorage<PrivateMikanReview>(displayName + '_private', {
-      type: 'private_review'
+      type: 'private_review',
     })
 
   useEffect(() => {
@@ -86,7 +86,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
           id: displayName,
           type: 'profile',
           name: mikanProfile.name,
-          imageUrl: mikanProfile.imageUrl
+          imageUrl: mikanProfile.imageUrl,
         })
       }
     }
@@ -110,13 +110,13 @@ export const MikanDetail = (props: Props): React.ReactElement => {
         setPublicMikanReview({
           type: 'public_review',
           taste: mikanData.taste,
-          texture: mikanData.texture
+          texture: mikanData.texture,
         })
       } else {
         setPublicMikanReview({
           type: 'public_review',
           taste: 0,
-          texture: 0
+          texture: 0,
         })
       }
     }
@@ -139,12 +139,12 @@ export const MikanDetail = (props: Props): React.ReactElement => {
       if (mikanData !== undefined) {
         setPrivateMikanReview({
           type: 'private_review',
-          note: mikanData.note
+          note: mikanData.note,
         })
       } else {
         setPrivateMikanReview({
           type: 'private_review',
-          note: ''
+          note: '',
         })
       }
     }
@@ -161,7 +161,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
     setPublicMikanReview({
       type: publicMikanReview.type,
       taste: Number(value),
-      texture: publicMikanReview.texture
+      texture: publicMikanReview.texture,
     })
   }
 
@@ -176,7 +176,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
     setPublicMikanReview({
       type: publicMikanReview.type,
       taste: publicMikanReview.taste,
-      texture: Number(value)
+      texture: Number(value),
     })
   }
 
@@ -185,7 +185,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
       .value
     setPrivateMikanReview({
       type: privateMikanReview.type,
-      note: innerText
+      note: innerText,
     })
   }
 
@@ -206,7 +206,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
       const updateMikan: PublicMikanReview = {
         type: publicMikanReview.type,
         taste: publicMikanReview.taste,
-        texture: publicMikanReview.texture
+        texture: publicMikanReview.texture,
       }
 
       await setDoc(mikanRef, updateMikan)
@@ -226,7 +226,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
 
       const updateMikan: PrivateMikanReview = {
         type: privateMikanReview.type,
-        note: privateMikanReview.note
+        note: privateMikanReview.note,
       }
 
       await setDoc(mikanRef, updateMikan)
