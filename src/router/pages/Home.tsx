@@ -2,6 +2,7 @@ import '@/services/auth/firebase'
 import styled from '@emotion/styled'
 import { kanmi } from '@/constants/kanmi'
 import { Grid } from '@mui/material'
+import { Link } from 'react-router-dom'
 
 const KanmiList = (): React.ReactElement => {
   const kanmiList = kanmi.map((monthlyKanmi, index) => {
@@ -20,7 +21,9 @@ const KanmiList = (): React.ReactElement => {
     return (
       <Grid item xs={12} md={6} key={index}>
         <h2>
-          {monthlyKanmi.year}年{monthlyKanmi.month}月配送
+          <Link to={'/mikan?displayName=' + monthlyKanmi.mikanList}>
+            {monthlyKanmi.year}年{monthlyKanmi.month}月配送
+          </Link>
         </h2>
         <YokoWrapper>{mikanList}</YokoWrapper>
       </Grid>
