@@ -18,4 +18,17 @@ export const kanmi: MonthlyKanmi[] = [
       'benimadonnna',
     ],
   },
+  {
+    year: 2022,
+    month: 12,
+    mikanList: [
+      'nankan20gou',
+      'seinannohikari',
+      'harehime',
+      'sui-tosupuringu',
+      'mihaya',
+      'tunokagayaki',
+      'daimasaki',
+    ],
+  },
 ]
