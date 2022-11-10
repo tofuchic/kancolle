@@ -12,7 +12,7 @@ const RootRoutes = (): React.ReactElement | null => {
     { path: '/home', element: <Home /> },
     { path: '/login', element: <Login /> },
     { path: '/mikan', element: <MikanDetails /> },
-    { path: '/total', element: <MikanTotal /> }
+    { path: '/total', element: <MikanTotal /> },
   ])
 }
 

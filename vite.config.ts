@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: '/kancolle/',
   resolve: {
-    alias: [{ find: '@', replacement: '/src' }]
+    alias: [{ find: '@', replacement: '/src' }],
   },
-  plugins: [react()]
+  plugins: [react()],
 })

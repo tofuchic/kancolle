@@ -53,14 +53,14 @@ export const MikanTotal = (): React.ReactElement => {
           height: 480,
           type: 'scatter',
           animations: {
-            enabled: true
+            enabled: true,
           },
           zoom: {
-            enabled: false
+            enabled: false,
           },
           toolbar: {
-            show: false
-          }
+            show: false,
+          },
         },
         fill: {
           type: 'image',
@@ -68,26 +68,26 @@ export const MikanTotal = (): React.ReactElement => {
           image: {
             src: getSrcImageList(),
             width: 20,
-            height: 20
-          }
+            height: 20,
+          },
         },
         grid: {
           xaxis: {
             lines: {
-              show: true
-            }
+              show: true,
+            },
           },
           yaxis: {
             lines: {
-              show: true
-            }
-          }
+              show: true,
+            },
+          },
         },
         legend: {
-          show: false
+          show: false,
         },
         markers: {
-          size: 10
+          size: 10,
         },
         tooltip: {
           theme: 'dark',
@@ -97,7 +97,7 @@ export const MikanTotal = (): React.ReactElement => {
               setDisplayName(data.id)
             }
             return data.name
-          }
+          },
         },
         xaxis: {
           type: 'numeric',
@@ -110,8 +110,8 @@ export const MikanTotal = (): React.ReactElement => {
             color: '#78909C',
             height: 4,
             offsetX: 0,
-            offsetY: 0
-          }
+            offsetY: 0,
+          },
         },
         yaxis: {
           tickAmount: 10,
@@ -122,9 +122,9 @@ export const MikanTotal = (): React.ReactElement => {
             color: '#78909C',
             width: 4,
             offsetX: -0,
-            offsetY: 0
-          }
-        }
+            offsetY: 0,
+          },
+        },
       })
     }
   }, [mikansStatistics])
@@ -146,14 +146,14 @@ export const MikanTotal = (): React.ReactElement => {
       height: 480,
       type: 'scatter',
       animations: {
-        enabled: true
+        enabled: true,
       },
       zoom: {
-        enabled: false
+        enabled: false,
       },
       toolbar: {
-        show: false
-      }
+        show: false,
+      },
     },
     fill: {
       type: 'image',
@@ -161,26 +161,26 @@ export const MikanTotal = (): React.ReactElement => {
       image: {
         src: getSrcImageList(),
         width: 20,
-        height: 20
-      }
+        height: 20,
+      },
     },
     grid: {
       xaxis: {
         lines: {
-          show: true
-        }
+          show: true,
+        },
       },
       yaxis: {
         lines: {
-          show: true
-        }
-      }
+          show: true,
+        },
+      },
     },
     legend: {
-      show: false
+      show: false,
     },
     markers: {
-      size: 10
+      size: 10,
     },
     tooltip: {
       theme: 'dark',
@@ -190,7 +190,7 @@ export const MikanTotal = (): React.ReactElement => {
           setDisplayName(data.id)
         }
         return data.name
-      }
+      },
     },
     xaxis: {
       type: 'numeric',
@@ -203,8 +203,8 @@ export const MikanTotal = (): React.ReactElement => {
         color: '#78909C',
         height: 4,
         offsetX: 0,
-        offsetY: 0
-      }
+        offsetY: 0,
+      },
     },
     yaxis: {
       tickAmount: 10,
@@ -215,9 +215,9 @@ export const MikanTotal = (): React.ReactElement => {
         color: '#78909C',
         width: 4,
         offsetX: -0,
-        offsetY: 0
-      }
-    }
+        offsetY: 0,
+      },
+    },
   })
 
   return (
