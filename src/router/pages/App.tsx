@@ -193,7 +193,6 @@ export const App: React.FunctionComponent = () => {
         </Main>
 
         {/* <AuthProvider>
-
         </AuthProvider> */}
       </Box>
     </HashRouter>
