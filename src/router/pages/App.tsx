@@ -89,7 +89,7 @@ const links = [
   { link: '#/login', text: 'Login' },
   {
     link: '#/mikan?displayName=cut_fruit_orange,fruit_ao_mikan',
-    text: '11月のみかん',
+    text: 'n月のみかん（サンプル）',
   },
   { link: '#/total', text: 'みんなの評価' },
 ]
@@ -108,33 +108,6 @@ export const App: React.FunctionComponent = () => {
 
   return (
     <HashRouter basename="/">
-      {/* <nav>
-        <ul>
-          <li>
-            <Link to="/home">Home</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-          <li>
-            <Link to="/mikan?displayName=cut_fruit_orange,fruit_ao_mikan">
-              n月のみかん（サンプル）
-            </Link>
-          </li> */}
-      {/* DBにデータを入れてから */}
-      {/* <li>
-            <Link to="/mikan?displayName=taguchiwase,kimurawase,orogurosu,yamashitabeniwase,kanjukuyurawase,amakusa,benimadonna">
-              11月のみかん
-            </Link>
-          </li> */}
-      {/* <li>
-            <Link to="/total">みんなの評価（イメージ図）</Link>
-          </li>
-        </ul>
-      </nav>
-      <AuthProvider>
-        <RootRoutes />
-      </AuthProvider> */}
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar position="fixed" open={open}>
@@ -189,11 +162,10 @@ export const App: React.FunctionComponent = () => {
         </Drawer>
         <Main open={open}>
           <DrawerHeader />
-          <RootRoutes />
+          <AuthProvider>
+            <RootRoutes />
+          </AuthProvider>
         </Main>
-
-        {/* <AuthProvider>
-        </AuthProvider> */}
       </Box>
     </HashRouter>
   )

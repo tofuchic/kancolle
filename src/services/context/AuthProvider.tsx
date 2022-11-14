@@ -1,4 +1,10 @@
-import { createContext, useState, useContext, ReactNode } from 'react'
+import {
+  createContext,
+  useState,
+  useContext,
+  ReactNode,
+  useEffect,
+} from 'react'
 import { auth } from '@/services/auth/firebase'
 import {
   getRedirectResult,
@@ -71,13 +77,15 @@ export const AuthProvider = ({ children }: Props): React.ReactElement => {
       })
   }
 
-  onAuthStateChanged(auth, (user) => {
-    console.debug(user)
-    setCurrentUser(user)
-    setIsLoading(false)
-    void getAccessToken()
-    console.debug('onAuthStateChanged')
-  })
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      console.debug(user)
+      setCurrentUser(user)
+      setIsLoading(false)
+      void getAccessToken()
+      console.debug('onAuthStateChanged')
+    })
+  }, [])
 
   const value: AuthContextType = {
     currentUser,
