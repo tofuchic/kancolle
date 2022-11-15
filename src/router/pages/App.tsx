@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { styled, useTheme } from '@mui/material/styles'
+import { styled, useTheme, createTheme } from '@mui/material/styles'
 import { HashRouter, useRoutes } from 'react-router-dom'
 import { AuthProvider } from '@/services/context/AuthProvider'
 import Box from '@mui/material/Box'
@@ -9,7 +9,6 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import List from '@mui/material/List'
 import Typography from '@mui/material/Typography'
-import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
@@ -18,13 +17,18 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
+import HomeIcon from '@mui/icons-material/Home'
+import LoginIcon from '@mui/icons-material/Login'
+import ViewListIcon from '@mui/icons-material/ViewList'
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 
 import { Home } from './Home'
 import { Login } from './Login'
 import { MikanDetails } from './MikanDetails'
 import { MikanTotal } from './MikanTotal'
+import { ThemeProvider } from '@emotion/react'
 
-const drawerWidth = 240
+const drawerWidth = 280
 
 const RootRoutes = (): React.ReactElement | null => {
   return useRoutes([
@@ -34,6 +38,16 @@ const RootRoutes = (): React.ReactElement | null => {
     { path: '/total', element: <MikanTotal /> },
   ])
 }
+
+const themeColor = createTheme({
+  palette: {
+    primary: {
+      light: '#ff7961',
+      main: '#ef6c00',
+      dark: '#ba000d',
+    },
+  },
+})
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean
@@ -85,88 +99,94 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }))
 
 const links = [
-  { link: '#/home', text: 'Home' },
-  { link: '#/login', text: 'Login' },
+  { link: '#/home', text: 'Home', icon: <HomeIcon /> },
+  { link: '#/login', text: 'Login', icon: <LoginIcon /> },
   {
     link: '#/mikan?displayName=cut_fruit_orange,fruit_ao_mikan',
     text: 'n月のみかん（サンプル）',
+    icon: <ViewListIcon />,
   },
-  { link: '#/total', text: 'みんなの評価' },
+  { link: '#/total', text: 'みんなの評価', icon: <PeopleAltIcon /> },
 ]
 
 export const App: React.FunctionComponent = () => {
   const theme = useTheme()
   const [open, setOpen] = useState<boolean>(false)
 
-  function handleDrawerOpen(): void {
-    setOpen(true)
-  }
-
-  function handleDrawerClose(): void {
-    setOpen(false)
+  function handleDrawer(): void {
+    setOpen(!open)
   }
 
   return (
     <HashRouter basename="/">
-      <Box sx={{ display: 'flex' }}>
-        <CssBaseline />
-        <AppBar position="fixed" open={open}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              sx={{ mr: 2, ...(open && { display: 'none' }) }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" noWrap component="div">
-              Persistent drawer
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Drawer
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            '& .MuiDrawer-paper': {
+      <ThemeProvider theme={themeColor}>
+        <Box sx={{ display: 'flex' }}>
+          <CssBaseline />
+          <AppBar position="fixed" open={open} color="primary">
+            <Toolbar>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawer}
+                edge="start"
+                sx={{ mr: 2 }}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h5" noWrap component="div">
+                柑これ
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Drawer
+            sx={{
               width: drawerWidth,
-              boxSizing: 'border-box',
-            },
-          }}
-          variant="persistent"
-          anchor="left"
-          open={open}
-        >
-          <DrawerHeader>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === 'ltr' ? (
-                <ChevronLeftIcon />
-              ) : (
-                <ChevronRightIcon />
-              )}
-            </IconButton>
-          </DrawerHeader>
-          <Divider />
-          <List>
-            {links.map((text, index) => (
-              <ListItem key={index} disablePadding>
-                <ListItemButton component="a" href={text.link}>
-                  <ListItemIcon>い</ListItemIcon>
-                  <ListItemText primary={text.text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Drawer>
-        <Main open={open}>
-          <DrawerHeader />
-          <AuthProvider>
-            <RootRoutes />
-          </AuthProvider>
-        </Main>
-      </Box>
+              flexShrink: 0,
+              '& .MuiDrawer-paper': {
+                width: drawerWidth,
+                boxSizing: 'border-box',
+              },
+            }}
+            variant="persistent"
+            anchor="left"
+            open={open}
+            color="primary"
+          >
+            <DrawerHeader>
+              <IconButton onClick={handleDrawer}>
+                {theme.direction === 'ltr' ? (
+                  <ChevronLeftIcon />
+                ) : (
+                  <ChevronRightIcon />
+                )}
+              </IconButton>
+            </DrawerHeader>
+            <List>
+              {links.map((text, index) => (
+                <ListItem key={index} disablePadding>
+                  <ListItemButton component="a" href={text.link}>
+                    <ListItemIcon>{text.icon}</ListItemIcon>
+                    <ListItemText
+                      primary={text.text}
+                      primaryTypographyProps={{
+                        variant: 'subtitle1',
+                        mt: '5px',
+                        mb: '5px',
+                      }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </Drawer>
+          <Main open={open}>
+            <DrawerHeader />
+            <AuthProvider>
+              <RootRoutes />
+            </AuthProvider>
+          </Main>
+        </Box>
+      </ThemeProvider>
     </HashRouter>
   )
 }
