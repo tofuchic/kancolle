@@ -19,7 +19,7 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import HomeIcon from '@mui/icons-material/Home'
 import LoginIcon from '@mui/icons-material/Login'
-import ViewListIcon from '@mui/icons-material/ViewList'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 
 import { Home } from './Home'
@@ -104,7 +104,7 @@ const links = [
   {
     link: '#/mikan?displayName=cut_fruit_orange,fruit_ao_mikan',
     text: 'n月のみかん（サンプル）',
-    icon: <ViewListIcon />,
+    icon: <CalendarMonthIcon />,
   },
   { link: '#/total', text: 'みんなの評価', icon: <PeopleAltIcon /> },
 ]
