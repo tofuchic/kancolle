@@ -59,7 +59,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
     })
 
   useEffect(() => {
-    console.debug('useEffect')
+    console.debug(MikanDetail.name + ': useEffect')
     if (mikanProfile.name == null) {
       void getMikanProfile()
     } else if (
@@ -75,9 +75,8 @@ export const MikanDetail = (props: Props): React.ReactElement => {
   }, [mikanProfile, publicMikanReview, privateMikanReview])
 
   const getMikanProfile = async (): Promise<void> => {
-    console.debug(MikanDetail.name + ': getMikanProfile from firestore')
-
     if (auth.currentUser != null) {
+      console.debug(MikanDetail.name + ': getMikanProfile from firestore')
       const mikanRef = await getDoc(doc(db, 'mikans', displayName))
       const mikanProfile = mikanRef.data()
 
@@ -106,18 +105,23 @@ export const MikanDetail = (props: Props): React.ReactElement => {
       )
       const mikanData = mikan.data()
 
-      if (mikanData !== undefined) {
-        setPublicMikanReview({
-          type: 'public_review',
-          taste: mikanData.taste,
-          texture: mikanData.texture,
-        })
-      } else {
-        setPublicMikanReview({
-          type: 'public_review',
-          taste: 0,
-          texture: 0,
-        })
+      if (
+        publicMikanReview.taste !== undefined &&
+        publicMikanReview.texture !== undefined
+      ) {
+        if (mikanData !== undefined) {
+          setPublicMikanReview({
+            type: 'public_review',
+            taste: mikanData.taste,
+            texture: mikanData.texture,
+          })
+        } else {
+          setPublicMikanReview({
+            type: 'public_review',
+            taste: 0,
+            texture: 0,
+          })
+        }
       }
     }
   }
@@ -234,12 +238,14 @@ export const MikanDetail = (props: Props): React.ReactElement => {
   }
 
   useEffect(() => {
+    console.debug('debouncedPublicMikanReview useEffect')
     if (canUpdate) {
       void patchMyMikanPublicReview()
     }
   }, [debouncedPublicMikanReview])
 
   useEffect(() => {
+    console.debug('debouncedPrivateMikanReview useEffect')
     if (canUpdate) {
       void patchMyMikanPrivateReview()
     }
