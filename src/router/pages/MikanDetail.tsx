@@ -58,20 +58,34 @@ export const MikanDetail = (props: Props): React.ReactElement => {
       type: 'private_review',
     })
 
+  const [
+    comparisonTargetPublicMikanReview,
+    setComparisonTargetPublicMikanReview,
+  ] = useState<PublicMikanReview>(publicMikanReview)
+
+  const [
+    comparisonTargetPrivateMikanReview,
+    setComparisonTargetPrivateMikanReview,
+  ] = useState<PrivateMikanReview>(privateMikanReview)
+
   useEffect(() => {
-    console.debug(MikanDetail.name + ': useEffect')
-    if (mikanProfile.name == null) {
-      void getMikanProfile()
-    } else if (
-      publicMikanReview.taste == null ||
-      publicMikanReview.texture == null
-    ) {
-      void getMyMikanPublicReview()
-    } else if (privateMikanReview.note == null) {
-      void getMyMikanPrivateReview()
-    } else {
-      setLoaded(true)
+    async function fetchData() {
+      // You can await here
+      if (mikanProfile.name == null) {
+        void getMikanProfile()
+      } else if (
+        publicMikanReview.taste == null ||
+        publicMikanReview.texture == null
+      ) {
+        setComparisonTargetPublicMikanReview(await getMyMikanPublicReview())
+      } else if (privateMikanReview.note == null) {
+        setComparisonTargetPrivateMikanReview(await getMyMikanPrivateReview())
+      } else {
+        setLoaded(true)
+      }
     }
+    console.debug(MikanDetail.name + ': useEffect')
+    fetchData()
   }, [mikanProfile, publicMikanReview, privateMikanReview])
 
   const getMikanProfile = async (): Promise<void> => {
@@ -91,7 +105,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
     }
   }
 
-  const getMyMikanPublicReview = async (): Promise<void> => {
+  const getMyMikanPublicReview = async (): Promise<PublicMikanReview> => {
     console.debug(MikanDetail.name + ': getMyMikanPublicReview from firestore')
     if (auth.currentUser != null) {
       const mikan = await getDoc(
@@ -105,28 +119,24 @@ export const MikanDetail = (props: Props): React.ReactElement => {
       )
       const mikanData = mikan.data()
 
-      if (
-        publicMikanReview.taste !== undefined &&
-        publicMikanReview.texture !== undefined
-      ) {
-        if (mikanData !== undefined) {
-          setPublicMikanReview({
-            type: 'public_review',
-            taste: mikanData.taste,
-            texture: mikanData.texture,
-          })
-        } else {
-          setPublicMikanReview({
-            type: 'public_review',
-            taste: 0,
-            texture: 0,
-          })
-        }
+      if (mikanData !== undefined) {
+        setPublicMikanReview({
+          type: 'public_review',
+          taste: mikanData.taste,
+          texture: mikanData.texture,
+        })
+      } else {
+        setPublicMikanReview({
+          type: 'public_review',
+          taste: 0,
+          texture: 0,
+        })
       }
     }
+    return publicMikanReview
   }
 
-  const getMyMikanPrivateReview = async (): Promise<void> => {
+  const getMyMikanPrivateReview = async (): Promise<PrivateMikanReview> => {
     console.debug(MikanDetail.name + ': getMyMikanPrivateReview from firestore')
     if (auth.currentUser != null) {
       const mikan = await getDoc(
@@ -152,6 +162,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
         })
       }
     }
+    return privateMikanReview
   }
 
   function mikanTaste(value: number): string {
@@ -214,6 +225,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
       }
 
       await setDoc(mikanRef, updateMikan)
+      setComparisonTargetPublicMikanReview(updateMikan)
     }
   }
 
@@ -234,20 +246,32 @@ export const MikanDetail = (props: Props): React.ReactElement => {
       }
 
       await setDoc(mikanRef, updateMikan)
+      setComparisonTargetPrivateMikanReview(updateMikan)
     }
   }
 
   useEffect(() => {
     console.debug('debouncedPublicMikanReview useEffect')
     if (canUpdate) {
-      void patchMyMikanPublicReview()
+      if (
+        publicMikanReview.taste != comparisonTargetPublicMikanReview.taste ||
+        publicMikanReview.texture != comparisonTargetPublicMikanReview.texture
+      ) {
+        void patchMyMikanPublicReview()
+      } else {
+        console.debug('skip db write access')
+      }
     }
   }, [debouncedPublicMikanReview])
 
   useEffect(() => {
     console.debug('debouncedPrivateMikanReview useEffect')
     if (canUpdate) {
-      void patchMyMikanPrivateReview()
+      if (privateMikanReview.note != comparisonTargetPrivateMikanReview.note) {
+        void patchMyMikanPrivateReview()
+      } else {
+        console.debug('skip db write access')
+      }
     }
   }, [debouncedPrivateMikanReview])
 
