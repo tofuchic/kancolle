@@ -42,9 +42,18 @@ const RootRoutes = (): React.ReactElement | null => {
 const themeColor = createTheme({
   palette: {
     primary: {
-      light: '#ff7961',
-      main: '#ef6c00',
-      dark: '#ba000d',
+      light: '#ffad32',
+      main: '#ef7c1d',
+      // main: '#ff9900',
+      dark: '#e08600',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#5CC13F',
+      main: '#10873d',
+      // main: '#35AC17',
+      dark: '#2E8914',
+      contrastText: '#fff',
     },
   },
 })
@@ -99,11 +108,11 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }))
 
 const links = [
-  { link: '#/home', text: 'Home', icon: <HomeIcon /> },
-  { link: '#/login', text: 'Login', icon: <LoginIcon /> },
+  { link: '#/home', text: 'Home', icon: <HomeIcon/> },
+  { link: '#/login', text: 'Login', icon: <LoginIcon/> },
   {
     link: '#/mikan?displayName=cut_fruit_orange,fruit_ao_mikan',
-    text: 'n月のみかん（サンプル）',
+    text: 'n月のみかん',
     icon: <CalendarMonthIcon />,
   },
   { link: '#/total', text: 'みんなの評価', icon: <PeopleAltIcon /> },
@@ -112,7 +121,7 @@ const links = [
 export const App: React.FunctionComponent = () => {
   const theme = useTheme()
   const [open, setOpen] = useState<boolean>(false)
-
+  
   function handleDrawer(): void {
     setOpen(!open)
   }
@@ -121,8 +130,7 @@ export const App: React.FunctionComponent = () => {
     <HashRouter basename="/">
       <ThemeProvider theme={themeColor}>
         <Box sx={{ display: 'flex' }}>
-          <CssBaseline />
-          <AppBar position="fixed" open={open} color="primary">
+          <AppBar position="fixed" open={open} color="secondary">
             <Toolbar>
               <IconButton
                 color="inherit"
@@ -145,33 +153,33 @@ export const App: React.FunctionComponent = () => {
               '& .MuiDrawer-paper': {
                 width: drawerWidth,
                 boxSizing: 'border-box',
+                backgroundColor: '#ef7c1d',
               },
             }}
             variant="persistent"
             anchor="left"
             open={open}
-            color="primary"
           >
             <DrawerHeader>
               <IconButton onClick={handleDrawer}>
                 {theme.direction === 'ltr' ? (
-                  <ChevronLeftIcon />
+                  <ChevronLeftIcon sx={{color: "#f0f0f0"}}/>
                 ) : (
-                  <ChevronRightIcon />
+                  <ChevronRightIcon sx={{color: "#f0f0f0"}}/>
                 )}
               </IconButton>
             </DrawerHeader>
-            <List>
+            <List sx={{ color: 'white' }}>
               {links.map((text, index) => (
                 <ListItem key={index} disablePadding>
                   <ListItemButton component="a" href={text.link}>
-                    <ListItemIcon>{text.icon}</ListItemIcon>
+                    <ListItemIcon sx={{color: "#f0f0f0", ml: "6px"}}>{text.icon}</ListItemIcon>
                     <ListItemText
                       primary={text.text}
                       primaryTypographyProps={{
+                        color: '#f0f0f0',
                         variant: 'subtitle1',
-                        mt: '5px',
-                        mb: '5px',
+                        fontSize: '24px',
                       }}
                     />
                   </ListItemButton>
