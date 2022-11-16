@@ -106,8 +106,10 @@ export const MikanDetail = (props: Props): React.ReactElement => {
   }
 
   const getMyMikanPublicReview = async (): Promise<PublicMikanReview> => {
-    console.debug(MikanDetail.name + ': getMyMikanPublicReview from firestore')
     if (auth.currentUser != null) {
+      console.debug(
+        MikanDetail.name + ': getMyMikanPublicReview from firestore'
+      )
       const mikan = await getDoc(
         doc(
           db,
@@ -137,8 +139,10 @@ export const MikanDetail = (props: Props): React.ReactElement => {
   }
 
   const getMyMikanPrivateReview = async (): Promise<PrivateMikanReview> => {
-    console.debug(MikanDetail.name + ': getMyMikanPrivateReview from firestore')
     if (auth.currentUser != null) {
+      console.debug(
+        MikanDetail.name + ': getMyMikanPrivateReview from firestore'
+      )
       const mikan = await getDoc(
         doc(
           db,
