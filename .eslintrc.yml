@@ -23,6 +23,7 @@ rules:
 ignorePatterns:
   - '.eslintrc.*'
   - 'vite.config.*'
+  - 'svg.d.ts'
 settings:
   react:
     version: detect

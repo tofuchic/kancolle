@@ -5,6 +5,10 @@ import styled from '@emotion/styled'
 import { MikanDetail } from './MikanDetail'
 import { collectionGroup, getDocs, query, where } from 'firebase/firestore'
 import { db } from '@/services/auth/firebase'
+import { ReactComponent as AmaiLogo } from '@/assets/amai.svg'
+import { ReactComponent as SuppaiLogo } from '@/assets/suppai.svg'
+import { ReactComponent as TorotoroLogo } from '@/assets/torotoro.svg'
+import { ReactComponent as ShakishakiLogo } from '@/assets/shakishaki.svg'
 import { IconButton } from '@mui/material'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import useLocalStorage from '@/hooks/useLocalStorage'
@@ -231,10 +235,14 @@ export const MikanTotal = (): React.ReactElement => {
           />
         </IconButton>
         <YokoWrapper>
-          <Column>とろとろ</Column>
+          <Column>
+            <TorotoroLogo />
+          </Column>
         </YokoWrapper>
         <YokoWrapper>
-          <Column>酸っぱい</Column>
+          <Column>
+            <SuppaiLogo />
+          </Column>
           <Chart
             options={options}
             series={mikansStatistics}
@@ -242,10 +250,14 @@ export const MikanTotal = (): React.ReactElement => {
             width={480}
             height={480}
           />
-          <Column>甘い</Column>
+          <Column>
+            <AmaiLogo />
+          </Column>
         </YokoWrapper>
         <YokoWrapper>
-          <Column>しゃきしゃき</Column>
+          <Column>
+            <ShakishakiLogo />
+          </Column>
         </YokoWrapper>
 
         <YokoWrapper>
