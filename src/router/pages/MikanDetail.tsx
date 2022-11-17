@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { auth, db } from '@/services/auth/firebase'
-import { ReactComponent as AmaiLogo } from '@/assets/amai_icon.svg'
-import { ReactComponent as SuppaiLogo } from '@/assets/suppai_icon.svg'
-import { ReactComponent as TorotoroLogo } from '@/assets/torotoro_icon.svg'
-import { ReactComponent as ShakishakiLogo } from '@/assets/shakishaki_icon.svg'
+import { ReactComponent as AmaiIcon } from '@/assets/amai_icon.svg'
+import { ReactComponent as SuppaiIcon } from '@/assets/suppai_icon.svg'
+import { ReactComponent as TorotoroIcon } from '@/assets/torotoro_icon.svg'
+import { ReactComponent as ShakishakiIcon } from '@/assets/shakishaki_icon.svg'
 import {
   Grid,
   TextField,
@@ -305,7 +305,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
             <Grid item xs={3}>
               <Column>
                 <div>
-                  <SuppaiLogo />
+                  <SuppaiIcon />
                 </div>
                 <p>酸っぱい</p>
               </Column>
@@ -341,7 +341,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
             <Grid item xs={3}>
               <Column>
                 <div>
-                  <AmaiLogo />
+                  <AmaiIcon />
                 </div>
                 <p>甘い</p>
               </Column>
@@ -352,7 +352,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
             <Grid item xs={3}>
               <Column>
                 <div>
-                  <ShakishakiLogo />
+                  <ShakishakiIcon />
                 </div>
                 <p>しゃきしゃき</p>
               </Column>
@@ -386,7 +386,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
             <Grid item xs={3}>
               <Column>
                 <div>
-                  <TorotoroLogo />
+                  <TorotoroIcon />
                 </div>
                 <p>とろとろ</p>
               </Column>
