@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { auth, db } from '@/services/auth/firebase'
+import { ReactComponent as AmaiLogo } from '@/assets/amai_icon.svg'
+import { ReactComponent as SuppaiLogo } from '@/assets/suppai_icon.svg'
+import { ReactComponent as TorotoroLogo } from '@/assets/torotoro_icon.svg'
+import { ReactComponent as ShakishakiLogo } from '@/assets/shakishaki_icon.svg'
 import {
   Grid,
   TextField,
@@ -299,7 +303,12 @@ export const MikanDetail = (props: Props): React.ReactElement => {
           <div style={{ padding: '8px' }}></div>
           <Grid container>
             <Grid item xs={3}>
-              <Column>酸っぱい</Column>
+              <Column>
+                <div>
+                  <SuppaiLogo />
+                </div>
+                <p>酸っぱい</p>
+              </Column>
             </Grid>
             <Grid item xs={6}>
               <Box>
@@ -330,13 +339,23 @@ export const MikanDetail = (props: Props): React.ReactElement => {
               </Box>
             </Grid>
             <Grid item xs={3}>
-              <Column>甘い</Column>
+              <Column>
+                <div>
+                  <AmaiLogo />
+                </div>
+                <p>甘い</p>
+              </Column>
             </Grid>
           </Grid>
 
           <Grid container>
             <Grid item xs={3}>
-              <Column>しゃきしゃき</Column>
+              <Column>
+                <div>
+                  <ShakishakiLogo />
+                </div>
+                <p>しゃきしゃき</p>
+              </Column>
             </Grid>
             <Grid item xs={6}>
               {canUpdate ? (
@@ -365,7 +384,12 @@ export const MikanDetail = (props: Props): React.ReactElement => {
               )}
             </Grid>
             <Grid item xs={3}>
-              <Column>とろとろ</Column>
+              <Column>
+                <div>
+                  <TorotoroLogo />
+                </div>
+                <p>とろとろ</p>
+              </Column>
             </Grid>
           </Grid>
           <div style={{ padding: '8px', marginTop: '10px' }}>
