@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { styled, useTheme, createTheme } from '@mui/material/styles'
 import { HashRouter, useRoutes } from 'react-router-dom'
 import { AuthProvider } from '@/services/context/AuthProvider'
 import Box from '@mui/material/Box'
 import Drawer from '@mui/material/Drawer'
-import CssBaseline from '@mui/material/CssBaseline'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import List from '@mui/material/List'
@@ -108,8 +107,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }))
 
 const links = [
-  { link: '#/home', text: 'Home', icon: <HomeIcon/> },
-  { link: '#/login', text: 'Login', icon: <LoginIcon/> },
+  { link: '#/home', text: 'Home', icon: <HomeIcon /> },
+  { link: '#/login', text: 'Login', icon: <LoginIcon /> },
   {
     link: '#/mikan?displayName=cut_fruit_orange,fruit_ao_mikan',
     text: 'n月のみかん',
@@ -121,7 +120,7 @@ const links = [
 export const App: React.FunctionComponent = () => {
   const theme = useTheme()
   const [open, setOpen] = useState<boolean>(false)
-  
+
   function handleDrawer(): void {
     setOpen(!open)
   }
@@ -163,9 +162,9 @@ export const App: React.FunctionComponent = () => {
             <DrawerHeader>
               <IconButton onClick={handleDrawer}>
                 {theme.direction === 'ltr' ? (
-                  <ChevronLeftIcon sx={{color: "#f0f0f0"}}/>
+                  <ChevronLeftIcon sx={{ color: '#f0f0f0' }} />
                 ) : (
-                  <ChevronRightIcon sx={{color: "#f0f0f0"}}/>
+                  <ChevronRightIcon sx={{ color: '#f0f0f0' }} />
                 )}
               </IconButton>
             </DrawerHeader>
@@ -173,7 +172,9 @@ export const App: React.FunctionComponent = () => {
               {links.map((text, index) => (
                 <ListItem key={index} disablePadding>
                   <ListItemButton component="a" href={text.link}>
-                    <ListItemIcon sx={{color: "#f0f0f0", ml: "6px"}}>{text.icon}</ListItemIcon>
+                    <ListItemIcon sx={{ color: '#f0f0f0', ml: '6px' }}>
+                      {text.icon}
+                    </ListItemIcon>
                     <ListItemText
                       primary={text.text}
                       primaryTypographyProps={{
