@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Box, Container, Grid } from '@mui/material'
 import '@/styles/App.css'
 import Chart from 'react-apexcharts'
 import styled from '@emotion/styled'
@@ -65,6 +66,7 @@ export const MikanTotal = (): React.ReactElement => {
           toolbar: {
             show: false,
           },
+          redrawOnParentResize: true,
         },
         fill: {
           type: 'image',
@@ -158,6 +160,7 @@ export const MikanTotal = (): React.ReactElement => {
       toolbar: {
         show: false,
       },
+      redrawOnParentResize: true,
     },
     fill: {
       type: 'image',
@@ -225,68 +228,86 @@ export const MikanTotal = (): React.ReactElement => {
   })
 
   return (
-    <>
-      <TateWrapper>
-        <IconButton aria-label="refresh" size="large">
-          <RefreshIcon
-            onClick={() => {
-              void getAllMikanStatistics()
-            }}
-          />
-        </IconButton>
-        <YokoWrapper>
-          <Column>
-            <TorotoroLogo />
-          </Column>
-        </YokoWrapper>
-        <YokoWrapper>
-          <Column>
-            <SuppaiLogo />
-          </Column>
-          <Chart
-            options={options}
-            series={mikansStatistics}
-            type="scatter"
-            width={480}
-            height={480}
-          />
-          <Column>
-            <AmaiLogo />
-          </Column>
-        </YokoWrapper>
-        <YokoWrapper>
-          <Column>
-            <ShakishakiLogo />
-          </Column>
-        </YokoWrapper>
-
-        <YokoWrapper>
-          {displayName.length > 0 && (
-            <div key={displayName}>
-              <MikanDetail displayName={displayName} canUpdate={false} />
-            </div>
-          )}
-        </YokoWrapper>
-      </TateWrapper>
-    </>
+    <Container maxWidth={'xl'}>
+      <Grid container spacing={0.5}>
+        <Grid item md={12} lg={8}>
+          <Grid container spacing={0}>
+            <Grid item xs={12}>
+              <IconButton aria-label="refresh" size="large">
+                <RefreshIcon
+                  onClick={() => {
+                    void getAllMikanStatistics()
+                  }}
+                />
+              </IconButton>
+            </Grid>
+          </Grid>
+          <Grid container alignItems={'center'} justifyContent={'center'}>
+            <Grid item xs={1} md={2} sx={{ textAlign: 'center' }}>
+              <Box
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'end',
+                }}
+              >
+                <SuppaiLogo />
+              </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container>
+                <Grid item xs={1} md={2}>
+                  <Box
+                    sx={{
+                      height: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <TorotoroLogo />
+                  </Box>
+                </Grid>
+                <Grid item xs={10} md={8} sx={{height: "500px"}}>
+                  <Chart
+                    options={options}
+                    series={mikansStatistics}
+                    type="scatter"
+                    width={'100%'}
+                    height={'100%'}
+                  />
+                </Grid>
+                <Grid item xs={1} md={2}>
+                  <Box
+                    sx={{
+                      height: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <ShakishakiLogo />
+                  </Box>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={1} md={2}>
+              <Box
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <AmaiLogo />
+              </Box>
+            </Grid>
+          </Grid>
+        </Grid>
+        {displayName.length > 0 && (
+          <Grid item xs={12} md={6} lg={4}>
+            <MikanDetail displayName={displayName} canUpdate={false} />
+          </Grid>
+        )}
+      </Grid>
+    </Container>
   )
 }
-
-const TateWrapper = styled.section`
-  align-items: center;
-  width: 720px;
-`
-
-const YokoWrapper = styled.section`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-
-const Column = styled.span`
-  margin-left: 24px;
-  margin-right: 24px;
-  width: 100px;
-  display: block;
-  text-align: center;
-`
