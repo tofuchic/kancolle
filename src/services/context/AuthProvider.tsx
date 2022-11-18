@@ -42,6 +42,7 @@ export const AuthProvider = ({ children }: Props): React.ReactElement => {
   }
 
   const logout = async (): Promise<void> => {
+    localStorage.clear()
     return await auth.signOut()
   }
 
