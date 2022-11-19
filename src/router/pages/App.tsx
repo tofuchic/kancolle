@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled, useTheme, createTheme } from '@mui/material/styles'
 import { HashRouter, useRoutes } from 'react-router-dom'
 import { AuthProvider } from '@/services/context/AuthProvider'
@@ -18,6 +18,7 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import HomeIcon from '@mui/icons-material/Home'
 import LoginIcon from '@mui/icons-material/Login'
+import LogoutIcon from '@mui/icons-material/Logout'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 
@@ -26,6 +27,7 @@ import { Login } from './Login'
 import { MikanDetails } from './MikanDetails'
 import { MikanTotal } from './MikanTotal'
 import { ThemeProvider } from '@emotion/react'
+import { auth } from '@/services/auth/firebase'
 
 const drawerWidth = 280
 
@@ -106,15 +108,26 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }))
 
-const links = [
+const login_links = [
   { link: '#/home', text: 'Home', icon: <HomeIcon /> },
-  { link: '#/login', text: 'Login', icon: <LoginIcon /> },
   {
     link: '#/mikan?displayName=cut_fruit_orange,fruit_ao_mikan',
     text: 'n月のみかん',
     icon: <CalendarMonthIcon />,
   },
   { link: '#/total', text: 'みんなの評価', icon: <PeopleAltIcon /> },
+  { link: '#/login', text: 'ログイン', icon: <LoginIcon /> },
+]
+
+const logout_links = [
+  { link: '#/home', text: 'Home', icon: <HomeIcon /> },
+  {
+    link: '#/mikan?displayName=cut_fruit_orange,fruit_ao_mikan',
+    text: 'n月のみかん',
+    icon: <CalendarMonthIcon />,
+  },
+  { link: '#/total', text: 'みんなの評価', icon: <PeopleAltIcon /> },
+  { link: '#/login', text: 'ログアウト', icon: <LogoutIcon /> },
 ]
 
 export const App: React.FunctionComponent = () => {
@@ -169,23 +182,48 @@ export const App: React.FunctionComponent = () => {
               </IconButton>
             </DrawerHeader>
             <List sx={{ color: 'white' }}>
-              {links.map((text, index) => (
-                <ListItem key={index} disablePadding>
-                  <ListItemButton component="a" href={text.link}>
-                    <ListItemIcon sx={{ color: '#f0f0f0', ml: '6px' }}>
-                      {text.icon}
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={text.text}
-                      primaryTypographyProps={{
-                        color: '#f0f0f0',
-                        variant: 'subtitle1',
-                        fontSize: '24px',
-                      }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              ))}
+              {auth.currentUser != null && (
+                <>
+                  {logout_links.map((text, index) => (
+                    <ListItem key={index} disablePadding>
+                      <ListItemButton component="a" href={text.link}>
+                        <ListItemIcon sx={{ color: '#f0f0f0', ml: '6px' }}>
+                          {text.icon}
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={text.text}
+                          primaryTypographyProps={{
+                            color: '#f0f0f0',
+                            variant: 'subtitle1',
+                            fontSize: '24px',
+                          }}
+                        />
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                </>
+              )}
+              {auth.currentUser == null && (
+                <>
+                  {login_links.map((text, index) => (
+                    <ListItem key={index} disablePadding>
+                      <ListItemButton component="a" href={text.link}>
+                        <ListItemIcon sx={{ color: '#f0f0f0', ml: '6px' }}>
+                          {text.icon}
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={text.text}
+                          primaryTypographyProps={{
+                            color: '#f0f0f0',
+                            variant: 'subtitle1',
+                            fontSize: '24px',
+                          }}
+                        />
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                </>
+              )}
             </List>
           </Drawer>
           <Main open={open}>
