@@ -186,7 +186,7 @@ export const App: React.FunctionComponent = () => {
               )}
             </List>
           </SwipeableDrawer>
-          <Box sx={{width: '100%'}}>
+          <Box sx={{ width: '100%' }}>
             <DrawerHeader />
             <AuthProvider>
               <RootRoutes />

@@ -24,7 +24,7 @@ const KanmiList = (): React.ReactElement => {
     })
     return (
       <Grid item xs={12} md={10} lg={8} xl={6} key={index}>
-        <Grid container key={index} sx={{padding: "8px"}}>
+        <Grid container key={index} sx={{ padding: '8px' }}>
           <h2>
             <Link to={'/mikan?displayName=' + monthlyKanmi.mikanList}>
               {monthlyKanmi.year}年{monthlyKanmi.month}月配送
