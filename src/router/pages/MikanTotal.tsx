@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { Box, Container, Grid } from '@mui/material'
 import '@/styles/App.css'
 import Chart from 'react-apexcharts'
-import styled from '@emotion/styled'
 import { MikanDetail } from './MikanDetail'
 import { collectionGroup, getDocs, query, where } from 'firebase/firestore'
 import { db } from '@/services/auth/firebase'
@@ -133,6 +132,7 @@ export const MikanTotal = (): React.ReactElement => {
         },
       })
     }
+    setLoading(false)
   }, [mikansStatistics])
 
   const [displayName, setDisplayName] = useState<string>('')
@@ -146,6 +146,8 @@ export const MikanTotal = (): React.ReactElement => {
     })
     return srcImageList
   }
+
+  const [loading, setLoading] = useState<boolean>(false)
 
   const [options, setOptions] = useState<ApexCharts.ApexOptions>({
     chart: {
@@ -229,15 +231,25 @@ export const MikanTotal = (): React.ReactElement => {
 
   return (
     <Container maxWidth={'xl'}>
-      <Grid container spacing={0.5}>
+      <Grid container spacing={3}>
         <Grid item md={12} lg={8}>
+      <h1>みんなの評価</h1>
           <Grid container spacing={0}>
             <Grid item xs={12}>
-              <IconButton aria-label="refresh" size="large">
+              <IconButton
+                aria-label="refresh"
+                size="large"
+                onClick={() => {
+                  setLoading(true)
+                  void getAllMikanStatistics()
+                }}
+              >
                 <RefreshIcon
-                  onClick={() => {
-                    void getAllMikanStatistics()
-                  }}
+                  sx={
+                    loading
+                      ? { animation: 'spin 1s linear infinite' }
+                      : undefined
+                  }
                 />
               </IconButton>
             </Grid>
@@ -267,7 +279,7 @@ export const MikanTotal = (): React.ReactElement => {
                     <TorotoroLogo />
                   </Box>
                 </Grid>
-                <Grid item xs={10} md={8} sx={{height: "500px"}}>
+                <Grid item xs={10} md={8} sx={{ height: '600px' }}>
                   <Chart
                     options={options}
                     series={mikansStatistics}
@@ -295,6 +307,7 @@ export const MikanTotal = (): React.ReactElement => {
                   height: '100%',
                   display: 'flex',
                   alignItems: 'center',
+                  marginTop: '16px'
                 }}
               >
                 <AmaiLogo />
