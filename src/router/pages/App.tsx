@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { styled, useTheme, createTheme } from '@mui/material/styles'
 import { HashRouter, useRoutes } from 'react-router-dom'
 import { AuthProvider } from '@/services/context/AuthProvider'
 import Box from '@mui/material/Box'
-import Drawer from '@mui/material/Drawer'
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
+import SwipeableDrawer from '@mui/material/SwipeableDrawer'
+import MuiAppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import List from '@mui/material/List'
 import Typography from '@mui/material/Typography'
@@ -59,46 +59,6 @@ const themeColor = createTheme({
   },
 })
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
-  open?: boolean
-}>(({ theme, open }) => ({
-  flexGrow: 1,
-  padding: theme.spacing(3),
-  transition: theme.transitions.create('margin', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  marginLeft: `-${drawerWidth}px`,
-  ...(open && {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  }),
-}))
-
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean
-}
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
-  transition: theme.transitions.create(['margin', 'width'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}))
-
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -142,7 +102,7 @@ export const App: React.FunctionComponent = () => {
     <HashRouter basename="/">
       <ThemeProvider theme={themeColor}>
         <Box sx={{ display: 'flex' }}>
-          <AppBar position="fixed" open={open} color="secondary">
+          <MuiAppBar position="fixed" color="secondary">
             <Toolbar>
               <IconButton
                 color="inherit"
@@ -157,8 +117,8 @@ export const App: React.FunctionComponent = () => {
                 柑これ
               </Typography>
             </Toolbar>
-          </AppBar>
-          <Drawer
+          </MuiAppBar>
+          <SwipeableDrawer
             sx={{
               width: drawerWidth,
               flexShrink: 0,
@@ -168,9 +128,9 @@ export const App: React.FunctionComponent = () => {
                 backgroundColor: '#ef7c1d',
               },
             }}
-            variant="persistent"
-            anchor="left"
             open={open}
+            onClose={handleDrawer}
+            onOpen={handleDrawer}
           >
             <DrawerHeader>
               <IconButton onClick={handleDrawer}>
@@ -225,13 +185,13 @@ export const App: React.FunctionComponent = () => {
                 </>
               )}
             </List>
-          </Drawer>
-          <Main open={open}>
+          </SwipeableDrawer>
+          <Box sx={{ width: '100%' }}>
             <DrawerHeader />
             <AuthProvider>
               <RootRoutes />
             </AuthProvider>
-          </Main>
+          </Box>
         </Box>
       </ThemeProvider>
     </HashRouter>
