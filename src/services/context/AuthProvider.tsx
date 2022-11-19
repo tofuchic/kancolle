@@ -13,6 +13,7 @@ import {
   signInWithRedirect,
   User,
 } from 'firebase/auth'
+import { Skeleton } from '@mui/material'
 
 interface AuthContextType {
   currentUser: User | null
@@ -42,7 +43,9 @@ export const AuthProvider = ({ children }: Props): React.ReactElement => {
   }
 
   const logout = async (): Promise<void> => {
-    return await auth.signOut()
+    location.reload()
+    localStorage.clear()
+    await auth.signOut()
   }
 
   const getAccessToken = async (): Promise<void> => {
@@ -95,7 +98,7 @@ export const AuthProvider = ({ children }: Props): React.ReactElement => {
 
   return (
     <AuthContext.Provider value={value}>
-      {isLoading ? <p>Loading...</p> : children}
+      {isLoading ? <Skeleton animation="wave" /> : children}
     </AuthContext.Provider>
   )
 }
