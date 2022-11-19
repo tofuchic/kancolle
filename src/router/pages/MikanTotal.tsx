@@ -263,7 +263,7 @@ export const MikanTotal = (): React.ReactElement => {
                   alignItems: 'end',
                 }}
               >
-                <SuppaiLogo />
+                <TorotoroLogo />
               </Box>
             </Grid>
             <Grid item xs={12}>
@@ -276,10 +276,15 @@ export const MikanTotal = (): React.ReactElement => {
                       alignItems: 'center',
                     }}
                   >
-                    <TorotoroLogo />
+                    <SuppaiLogo />
                   </Box>
                 </Grid>
-                <Grid item xs={10} md={8} sx={{ height: '600px' }}>
+                <Grid
+                  item
+                  xs={10}
+                  md={8}
+                  sx={{ height: '600px', width: '720px' }}
+                >
                   <Chart
                     options={options}
                     series={mikansStatistics}
@@ -296,7 +301,7 @@ export const MikanTotal = (): React.ReactElement => {
                       alignItems: 'center',
                     }}
                   >
-                    <ShakishakiLogo />
+                    <AmaiLogo />
                   </Box>
                 </Grid>
               </Grid>
@@ -310,7 +315,7 @@ export const MikanTotal = (): React.ReactElement => {
                   marginTop: '16px',
                 }}
               >
-                <AmaiLogo />
+                <ShakishakiLogo />
               </Box>
             </Grid>
           </Grid>
