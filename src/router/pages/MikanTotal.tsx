@@ -233,7 +233,7 @@ export const MikanTotal = (): React.ReactElement => {
     <Container maxWidth={'xl'}>
       <Grid container spacing={3}>
         <Grid item md={12} lg={8}>
-      <h1>みんなの評価</h1>
+          <h1>みんなの評価</h1>
           <Grid container spacing={0}>
             <Grid item xs={12}>
               <IconButton
@@ -307,7 +307,7 @@ export const MikanTotal = (): React.ReactElement => {
                   height: '100%',
                   display: 'flex',
                   alignItems: 'center',
-                  marginTop: '16px'
+                  marginTop: '16px',
                 }}
               >
                 <AmaiLogo />
@@ -316,7 +316,7 @@ export const MikanTotal = (): React.ReactElement => {
           </Grid>
         </Grid>
         {displayName.length > 0 && (
-          <Grid item xs={12} md={6} lg={4}>
+          <Grid item xs={12} md={6} lg={4} key={displayName}>
             <MikanDetail displayName={displayName} canUpdate={false} />
           </Grid>
         )}
