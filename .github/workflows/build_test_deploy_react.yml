@@ -59,7 +59,7 @@ jobs:
           file_name: .env
           fail_on_empty: false
 
-      - name: yarn install, build and test
+      - name: yarn install,lint, build and test
         run: |
           yarn
           yarn lint
