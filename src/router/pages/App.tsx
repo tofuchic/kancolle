@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { styled, useTheme, createTheme } from '@mui/material/styles'
 import { HashRouter, useRoutes } from 'react-router-dom'
 import { AuthProvider } from '@/services/context/AuthProvider'

@@ -1,5 +1,4 @@
 import '@/services/auth/firebase'
-import styled from '@emotion/styled'
 import { kanmi } from '@/constants/kanmi'
 import { Grid } from '@mui/material'
 import { Link } from 'react-router-dom'
@@ -24,16 +23,14 @@ const KanmiList = (): React.ReactElement => {
     })
     return (
       <Grid item xs={12} md={10} lg={8} xl={6} key={index}>
-        <Grid container key={index} sx={{ padding: '8px' }}>
+        <Grid container sx={{ padding: '8px' }}>
           <h2>
             <Link to={'/mikan?displayName=' + monthlyKanmi.mikanList}>
               {monthlyKanmi.year}年{monthlyKanmi.month}月配送
             </Link>
           </h2>
         </Grid>
-        <Grid container key={index}>
-          {mikanList}
-        </Grid>
+        <Grid container>{mikanList}</Grid>
       </Grid>
     )
   })
