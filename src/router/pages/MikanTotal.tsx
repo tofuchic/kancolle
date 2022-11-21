@@ -232,7 +232,7 @@ export const MikanTotal = (): React.ReactElement => {
   return (
     <Container maxWidth={'xl'}>
       <Alert sx={{ my: 3 }} severity="warning">
-        This is a warning alert — check it out!
+        このページはまだサンプルです！ある程度みんなのレビューが揃ったら集計して表示しますね
       </Alert>
       <Typography sx={{ my: 3 }} variant={'h2'}>
         みんなの評価
