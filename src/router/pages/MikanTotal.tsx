@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Box, Container, Grid } from '@mui/material'
+import { Alert, Box, Container, Grid, Typography } from '@mui/material'
 import '@/styles/App.css'
 import Chart from 'react-apexcharts'
 import { MikanDetail } from './MikanDetail'
@@ -231,9 +231,14 @@ export const MikanTotal = (): React.ReactElement => {
 
   return (
     <Container maxWidth={'xl'}>
-      <Grid container spacing={3}>
+      <Alert sx={{ my: 3 }} severity="warning">
+        このページはまだサンプルです！ある程度みんなのレビューが揃ったら集計して表示しますね
+      </Alert>
+      <Typography sx={{ my: 3 }} variant={'h2'}>
+        みんなの評価
+      </Typography>
+      <Grid container spacing={3} sx={{ my: 3 }}>
         <Grid item md={12} lg={8}>
-          <h1>みんなの評価</h1>
           <Grid container spacing={0}>
             <Grid item xs={12}>
               <IconButton
