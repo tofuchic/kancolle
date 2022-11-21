@@ -237,7 +237,7 @@ export const MikanTotal = (): React.ReactElement => {
       <Typography sx={{ my: 3 }} variant={'h2'}>
         みんなの評価
       </Typography>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} sx={{ my: 3 }}>
         <Grid item md={12} lg={8}>
           <Grid container spacing={0}>
             <Grid item xs={12}>
