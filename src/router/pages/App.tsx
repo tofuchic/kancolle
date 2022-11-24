@@ -69,7 +69,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }))
 
 const login_links = [
-  { link: '#/home', text: 'Home', icon: <HomeIcon /> },
+  { link: '#/home', text: 'ホーム', icon: <HomeIcon /> },
   {
     link: '#/mikan?displayName=cut_fruit_orange,fruit_ao_mikan',
     text: 'n月のみかん',
@@ -80,7 +80,7 @@ const login_links = [
 ]
 
 const logout_links = [
-  { link: '#/home', text: 'Home', icon: <HomeIcon /> },
+  { link: '#/home', text: 'ホーム', icon: <HomeIcon /> },
   {
     link: '#/mikan?displayName=cut_fruit_orange,fruit_ao_mikan',
     text: 'n月のみかん',
