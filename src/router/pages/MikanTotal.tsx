@@ -234,7 +234,7 @@ export const MikanTotal = (): React.ReactElement => {
       <Alert sx={{ my: 3 }} severity="warning">
         このページはまだサンプルです！ある程度みんなのレビューが揃ったら集計して表示しますね
       </Alert>
-      <Typography sx={{ my: 3 }} variant={'h2'}>
+      <Typography sx={{ my: 3 }} variant={'h1'} fontSize="2em">
         みんなの評価
       </Typography>
       <Grid container spacing={3} sx={{ my: 3 }}>
