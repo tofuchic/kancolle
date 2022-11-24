@@ -1,6 +1,6 @@
 import { MikanDetail } from './MikanDetail'
 import { Link, useLocation } from 'react-router-dom'
-import { Container, Grid } from '@mui/material'
+import { Alert, Container, Grid, Typography } from '@mui/material'
 import queryString from 'query-string'
 import { auth } from '@/services/auth/firebase'
 
@@ -14,7 +14,11 @@ export const MikanDetails = (): React.ReactElement => {
 
   const MikanDetailList = (): React.ReactElement => {
     if (displayNames == null) {
-      return <div>表示するみかんがありません</div>
+      return (
+        <Alert sx={{ my: 3 }} severity="info">
+          表示するみかんがありません
+        </Alert>
+      )
     } else if (typeof displayNames === 'string') {
       return (
         <Grid item xs={12} md={6}>
@@ -42,9 +46,11 @@ export const MikanDetails = (): React.ReactElement => {
   return (
     <Container>
       {auth.currentUser == null && (
-        <li>
-          <Link to="/login">ログインしてみかんをレビューしよう</Link>
-        </li>
+        <Link to="/login">
+          <Typography sx={{ my: 3 }} variant={'h2'} fontSize="1.5em">
+            ログインしてみかんをレビューしよう
+          </Typography>{' '}
+        </Link>
       )}
       <Grid container spacing={0.5}>
         <MikanDetailList></MikanDetailList>
