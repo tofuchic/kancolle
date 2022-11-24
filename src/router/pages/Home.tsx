@@ -1,6 +1,6 @@
 import '@/services/auth/firebase'
 import { kanmi } from '@/constants/kanmi'
-import { Grid } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 
 const KanmiList = (): React.ReactElement => {
@@ -40,7 +40,9 @@ const KanmiList = (): React.ReactElement => {
 export const Home = (): React.ReactElement => {
   return (
     <div style={{ padding: '16px' }}>
-      <h1>柑橘サブスクリプション「かんみ」のみかん</h1>
+      <Typography sx={{ my: 3 }} variant={'h1'} fontSize="2em">
+        柑橘サブスクリプション「かんみ」のみかん
+      </Typography>{' '}
       <Grid container justifyContent={'center'}>
         <KanmiList></KanmiList>
       </Grid>
