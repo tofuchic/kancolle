@@ -12,6 +12,7 @@ import {
   Box,
   Skeleton,
   CircularProgress,
+  Typography,
 } from '@mui/material'
 import styled from '@emotion/styled'
 import { useDebounce } from '@/hooks/useDebounce'
@@ -285,7 +286,9 @@ export const MikanDetail = (props: Props): React.ReactElement => {
 
   return (
     <div>
-      <h1>{mikanProfile.name}</h1>
+      <Typography sx={{ my: 3 }} variant={'h1'} fontSize="2em">
+        {mikanProfile.name}
+      </Typography>
       <div style={{ textAlign: 'center' }}>
         {mikanProfile.imageUrl == null && (
           <img
@@ -299,15 +302,14 @@ export const MikanDetail = (props: Props): React.ReactElement => {
       </div>
       {loaded && (
         <>
-          <h3>{auth.currentUser?.displayName}さんの評価</h3>
-          <div style={{ padding: '8px' }}></div>
-          <Grid container>
+          <Typography sx={{ my: 3 }} variant={'h2'} fontSize="1.5em">
+            {auth.currentUser?.displayName}さん の評価
+          </Typography>
+          <Grid container sx={{ my: 1 }}>
             <Grid item xs={3}>
               <Column>
-                <div>
-                  <SuppaiIcon />
-                </div>
-                <p>酸っぱい</p>
+                <SuppaiIcon />
+                <Typography variant={'body1'}>酸っぱい</Typography>
               </Column>
             </Grid>
             <Grid item xs={6}>
@@ -340,21 +342,17 @@ export const MikanDetail = (props: Props): React.ReactElement => {
             </Grid>
             <Grid item xs={3}>
               <Column>
-                <div>
-                  <AmaiIcon />
-                </div>
-                <p>甘い</p>
+                <AmaiIcon />
+                <Typography variant={'body1'}>甘い</Typography>
               </Column>
             </Grid>
           </Grid>
 
-          <Grid container>
+          <Grid container sx={{ my: 1 }}>
             <Grid item xs={3}>
               <Column>
-                <div>
-                  <ShakishakiIcon />
-                </div>
-                <p>しゃきしゃき</p>
+                <ShakishakiIcon />
+                <Typography variant={'body1'}>しゃきしゃき</Typography>
               </Column>
             </Grid>
             <Grid item xs={6}>
@@ -385,55 +383,54 @@ export const MikanDetail = (props: Props): React.ReactElement => {
             </Grid>
             <Grid item xs={3}>
               <Column>
-                <div>
-                  <TorotoroIcon />
-                </div>
-                <p>とろとろ</p>
+                <TorotoroIcon />
+                <Typography variant={'body1'}>とろとろ</Typography>
               </Column>
             </Grid>
           </Grid>
-          <div style={{ padding: '8px', marginTop: '10px' }}>
-            {canUpdate ? (
-              <TextField
-                id={displayName}
-                label="メモ"
-                multiline
-                fullWidth
-                rows={4}
-                defaultValue={privateMikanReview.note}
-                placeholder="メモを入力してください"
-                onChange={mikanNoteChanged}
-              />
-            ) : (
-              <TextField
-                disabled={true}
-                id={displayName}
-                label="メモ"
-                multiline
-                fullWidth
-                rows={4}
-                defaultValue={privateMikanReview.note}
-                placeholder="メモを入力してください"
-                onChange={mikanNoteChanged}
-              />
-            )}
-          </div>
+          <Grid container sx={{ my: 1 }}>
+            <Grid item xs={12}>
+              {canUpdate ? (
+                <TextField
+                  id={displayName}
+                  label="メモ"
+                  multiline
+                  fullWidth
+                  rows={4}
+                  defaultValue={privateMikanReview.note}
+                  placeholder="メモを入力してください"
+                  onChange={mikanNoteChanged}
+                  sx={{ my: 1 }}
+                />
+              ) : (
+                <TextField
+                  disabled={true}
+                  id={displayName}
+                  label="メモ"
+                  multiline
+                  fullWidth
+                  rows={4}
+                  defaultValue={privateMikanReview.note}
+                  placeholder="メモを入力してください"
+                  onChange={mikanNoteChanged}
+                  sx={{ my: 1 }}
+                />
+              )}
+            </Grid>
+          </Grid>
         </>
       )}
       {auth.currentUser == null || loaded || (
         <>
-          <div style={{ margin: '16px 0px 16px 40px' }}>
-            <CircularProgress size="32px" />
-          </div>
-          <div style={{ padding: '16px 64px 8px 64px' }}>
-            <Skeleton animation="wave" />
-          </div>
-          <div style={{ padding: '16px 64px 8px 64px' }}>
-            <Skeleton animation="wave" />
-          </div>
-          <div style={{ padding: '16px' }}>
-            <Skeleton animation="wave" variant="rectangular" height={140} />
-          </div>
+          <CircularProgress size="32px" sx={{ mx: 5 }} />
+          <Skeleton animation="wave" sx={{ mx: 8, my: 3 }} />
+          <Skeleton animation="wave" sx={{ mx: 8, my: 3 }} />
+          <Skeleton
+            animation="wave"
+            variant="rectangular"
+            height={140}
+            sx={{ m: 2 }}
+          />
         </>
       )}
     </div>
