@@ -23,6 +23,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 
 import { Home } from './Home'
+import { Kanmi } from './Kanmi'
 import { Login } from './Login'
 import { MikanDetails } from './MikanDetails'
 import { MikanTotal } from './MikanTotal'
@@ -33,7 +34,8 @@ const drawerWidth = 280
 
 const RootRoutes = (): React.ReactElement | null => {
   return useRoutes([
-    { path: '/home', element: <Home /> },
+    { path: '/', element: <Home /> },
+    { path: '/kanmi', element: <Kanmi /> },
     { path: '/login', element: <Login /> },
     { path: '/mikan', element: <MikanDetails /> },
     { path: '/total', element: <MikanTotal /> },
@@ -69,10 +71,10 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }))
 
 const login_links = [
-  { link: '#/home', text: 'ホーム', icon: <HomeIcon /> },
+  { link: '#/', text: 'ホーム', icon: <HomeIcon /> },
   {
-    link: '#/mikan?displayName=cut_fruit_orange,fruit_ao_mikan',
-    text: 'n月のみかん',
+    link: '#/kanmi',
+    text: 'かんみのみかん',
     icon: <CalendarMonthIcon />,
   },
   { link: '#/total', text: 'みんなの評価', icon: <PeopleAltIcon /> },
@@ -80,10 +82,10 @@ const login_links = [
 ]
 
 const logout_links = [
-  { link: '#/home', text: 'ホーム', icon: <HomeIcon /> },
+  { link: '#/', text: 'ホーム', icon: <HomeIcon /> },
   {
-    link: '#/mikan?displayName=cut_fruit_orange,fruit_ao_mikan',
-    text: 'n月のみかん',
+    link: '#/kanmi',
+    text: 'かんみのみかん',
     icon: <CalendarMonthIcon />,
   },
   { link: '#/total', text: 'みんなの評価', icon: <PeopleAltIcon /> },
