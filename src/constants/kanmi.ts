@@ -2,6 +2,7 @@ export interface MonthlyKanmi {
   year: number
   month: number
   mikanList: string[]
+  imgURL: string
 }
 
 export const kanmi: MonthlyKanmi[] = [
@@ -17,6 +18,8 @@ export const kanmi: MonthlyKanmi[] = [
       'amakusa',
       'benimadonnna',
     ],
+    imgURL:
+      'https://base-ec2.akamaized.net/images/shop_front/kanmi-theshop-jp/438b0d103c9260910bdd940529497bf8.jpg',
   },
   // {
   //   year: 2022,
