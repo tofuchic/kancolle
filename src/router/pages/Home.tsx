@@ -10,9 +10,8 @@ const KanmiList = (): React.ReactElement => {
         <Grid item xs={6} md={3} key={index}>
           <img
             className="image-mikan"
-            // TODO: 清原から画像使う許可を貰うか、届いた後に自分で写真を撮り、publicディレクトリ下に配置する
-            // src={`https://github.com/tofuchic/kancolle/raw/main/public/mikan/${mikan}.png`}
-            src={`https://github.com/tofuchic/kancolle/raw/main/public/mikan/fruit_orange.png`}
+            // TODO: 清原から画像を使う許可を貰うなどしてもっと良い画像に差し替える
+            src={`https://github.com/tofuchic/kancolle/raw/main/public/mikan/${mikan}.png`}
             style={{
               width: '100%',
               height: 'auto',
