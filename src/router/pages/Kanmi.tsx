@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import '@/services/auth/firebase'
 import { kanmi } from '@/constants/kanmi'
 import { Box, Grid, Typography } from '@mui/material'
