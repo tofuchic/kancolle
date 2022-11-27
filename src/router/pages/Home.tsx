@@ -4,7 +4,7 @@ export const Home = (): React.ReactElement => {
   return (
     <Box sx={{ p: 2 }}>
       <Alert sx={{ my: 3 }} severity="info">
-        表示するみかんがありません
+        非公式サイトです。
       </Alert>
     </Box>
   )
