@@ -1,7 +1,6 @@
 import '@/services/auth/firebase'
 import { kanmi } from '@/constants/kanmi'
-import { Box, Grid, Typography } from '@mui/material'
-import { Link as MuiLink } from '@mui/material'
+import { Box, Grid, Typography, Link as MuiLink } from '@mui/material'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import { Link } from 'react-router-dom'
 
@@ -12,7 +11,7 @@ const KanmiList = (): React.ReactElement => {
         <Grid container sx={{ p: 1 }}>
           <Typography sx={{ my: 3 }} variant={'h2'} fontSize="1.5em">
             <Link to={'/mikan?displayName=' + monthlyKanmi.mikanList}>
-              {monthlyKanmi.year}年{monthlyKanmi.month}月配送
+              {monthlyKanmi.year}年{monthlyKanmi.month}月号
             </Link>
           </Typography>{' '}
         </Grid>
