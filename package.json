@@ -33,12 +33,12 @@
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",
-    "@storybook/addon-actions": "^6.5.13",
-    "@storybook/addon-essentials": "^6.5.13",
-    "@storybook/addon-interactions": "^6.5.13",
-    "@storybook/addon-links": "^6.5.13",
+    "@storybook/addon-actions": "^6.5.14",
+    "@storybook/addon-essentials": "^6.5.14",
+    "@storybook/addon-interactions": "^6.5.14",
+    "@storybook/addon-links": "^6.5.14",
     "@storybook/builder-vite": "^0.2.5",
-    "@storybook/react": "^6.5.13",
+    "@storybook/react": "^6.5.14",
     "@storybook/testing-library": "^0.0.13",
     "@types/node": "^18.11.0",
     "@types/react": "^18.0.17",
@@ -55,11 +55,10 @@
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.31.10",
-    "eslint-plugin-storybook": "^0.6.6",
+    "eslint-plugin-storybook": "^0.6.7",
     "prettier": "^2.7.1",
     "typescript": "*",
     "vite": "^3.1.0",
-    "storybook": "^6.5.13",
     "vite-plugin-svgr": "^2.2.2"
   }
 }
