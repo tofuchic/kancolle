@@ -21,17 +21,20 @@ export const kanmi: MonthlyKanmi[] = [
     imgURL:
       'https://base-ec2.akamaized.net/images/shop_front/kanmi-theshop-jp/438b0d103c9260910bdd940529497bf8.jpg',
   },
-  // {
-  //   year: 2022,
-  //   month: 12,
-  //   mikanList: [
-  //     'nankan20gou',
-  //     'seinannohikari',
-  //     'harehime',
-  //     'sui-tosupuringu',
-  //     'mihaya',
-  //     'tunokagayaki',
-  //     'daimasaki',
-  //   ],
-  // },
+  {
+    year: 2022,
+    month: 12,
+    mikanList: [
+      'daimasaki',
+      'sui-tosupuringu',
+      'mihaya',
+      'tunokagayaki',
+      'nankan20gou',
+      'harehime',
+      'seinannohikari',
+      'kurisumasutanzero',
+    ],
+    imgURL:
+      'https://raw.githubusercontent.com/tofuchic/kancolle/main/public/mikan/wanted.png',
+  },
 ]
