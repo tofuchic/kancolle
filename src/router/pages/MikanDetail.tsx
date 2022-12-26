@@ -293,7 +293,7 @@ export const MikanDetail = (props: Props): React.ReactElement => {
         {mikanProfile.imageUrl == null && (
           <img
             className="image-mikan"
-            src={`https://github.com/tofuchic/kancolle/raw/main/public/mikan/${displayName}.png`}
+            src={`https://github.com/tofuchic/kancolle/raw/main/public/mikan/${mikanProfile.year}${mikanProfile.month}/${displayName}.png`}
           />
         )}
         {mikanProfile.imageUrl != null && (
