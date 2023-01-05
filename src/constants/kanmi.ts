@@ -19,7 +19,7 @@ export const kanmi: MonthlyKanmi[] = [
       'benimadonnna',
     ],
     imgURL:
-      'https://base-ec2.akamaized.net/images/shop_front/kanmi-theshop-jp/438b0d103c9260910bdd940529497bf8.jpg',
+      'https://raw.githubusercontent.com/tofuchic/kancolle/main/public/mikan/wanted-november.png',
   },
   {
     year: 2022,
@@ -35,6 +35,6 @@ export const kanmi: MonthlyKanmi[] = [
       'kurisumasutanzero',
     ],
     imgURL:
-      'https://raw.githubusercontent.com/tofuchic/kancolle/main/public/mikan/wanted.png',
+      'https://raw.githubusercontent.com/tofuchic/kancolle/main/public/mikan/wanted-december.png',
   },
 ]
